@@ -1,26 +1,317 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-paper: #efece4;
+  --color-paper-2: #e8e3d8;
+  --color-surface: #fefdf9;
+  --color-elevated: #e2d8c6;
+  --color-ink: #111111;
+  --color-ink-2: #2c2823;
+  --color-muted: #655d50;
+  --color-accent: #4b63ff;
+  --color-accent-soft: #dfe3ff;
+  --color-line: #d7d4cb;
+  --font-sans: var(--ff-inter);
+  --font-hand: var(--ff-hand);
+  --font-mono: var(--ff-mono);
+  --font-display: var(--ff-display);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+:root {
+  --shadow-sm: #28221652 0 8px 16px -8px, #fffffff2 0 1px 0 0 inset;
+  --shadow-md: #28221633 0 12px 24px -14px, #2822161f 0 2px 6px -2px;
+  --shadow-lg: #2822164d 0 24px 54px -28px, #2822161f 0 6px 14px -8px;
+  --shadow-pill: #28221640 0 16px 30px -18px, #fffffff2 0 1px 0 0 inset;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-padding-top: 108px;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--ff-inter), ui-sans-serif, system-ui, sans-serif;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: #4b63ff;
+  color: #fefdf9;
+}
+
+a,
+button,
+input,
+textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+[role="button"] {
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 2px solid #4b63ff;
+  outline-offset: 3px;
+}
+
+/* ------------------------------------------------------------------ */
+/* type roles                                                          */
+
+.font-hand {
+  font-family: var(--ff-hand), ui-rounded, system-ui, sans-serif;
+}
+
+.font-display {
+  font-family: var(--ff-display), ui-rounded, system-ui, sans-serif;
+}
+
+.font-mono {
+  font-family: var(--ff-mono), ui-monospace, monospace;
+}
+
+.mono-label {
+  font-family: var(--ff-mono), ui-monospace, monospace;
+  font-size: 10.5px;
+  line-height: 1.4;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.hand-underline {
+  background-image: linear-gradient(transparent 68%, rgba(75, 99, 255, 0.36) 68%, rgba(75, 99, 255, 0.36) 95%, transparent 95%);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  padding: 0 0.04em;
+  margin: 0 -0.04em;
+}
+
+/* Puffy, soft-plastic display lettering: layered warm shadows do the work,
+   plus a pale stroke so the letters keep their edge on the paper. */
+.puffy {
+  font-family: var(--ff-display), ui-rounded, system-ui, sans-serif;
+  background: linear-gradient(180deg, #fffdf8 0%, #f8f1e3 58%, #eadcc4 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-stroke: 1px #fffdf8;
+  text-shadow:
+    0 0.01em 0 #fdf9f1,
+    0 0.04em 0 #efe3d0,
+    0 0.08em 0 #dcccb2,
+    0 0.13em 0.18em rgba(40, 34, 22, 0.2);
+  filter: drop-shadow(0 0.09em 0.08em rgba(40, 34, 22, 0.06));
+}
+
+.puffy-sm {
+  font-family: var(--ff-display), ui-rounded, system-ui, sans-serif;
+  color: #fbf8f0;
+  -webkit-text-stroke: 0.6px #fefdf9;
+  text-shadow:
+    0 1px 0 #efe8da,
+    0 2px 0 #e9dfce,
+    0 3px 0 #e0d4bf,
+    0 4px 0 #d7c9b1,
+    0 5px 0 #cdbda2,
+    0 7px 12px rgba(40, 34, 22, 0.2);
+}
+
+/* ------------------------------------------------------------------ */
+/* cards and panels                                                    */
+
+.paper-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: 28px;
+  box-shadow: var(--shadow-md);
+}
+
+.hairline {
+  border: 1px solid var(--color-line);
+}
+
+.pill {
+  border-radius: 999px;
+}
+
+.pill-dark {
+  background: var(--color-ink);
+  color: #fbf8f0;
+  border-radius: 999px;
+  transition: transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1), background-color 180ms ease;
+}
+
+.pill-dark:hover {
+  background: #33302b;
+  transform: translateY(-1px);
+}
+
+.pill-dark:active {
+  transform: translateY(0) scale(0.99);
+}
+
+.ghost-link {
+  position: relative;
+  transition: color 160ms ease;
+}
+
+.ghost-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -3px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 180ms ease;
+}
+
+.ghost-link:hover::after {
+  transform: scaleX(1);
+}
+
+/* ------------------------------------------------------------------ */
+/* doodles + motion                                                    */
+
+@keyframes floaty {
+  0%, 100% { transform: translateY(0) rotate(var(--rot, 0deg)); }
+  50% { transform: translateY(-9px) rotate(var(--rot, 0deg)); }
+}
+
+@keyframes wiggle {
+  0%, 100% { transform: rotate(-2deg); }
+  50% { transform: rotate(2.5deg); }
+}
+
+@keyframes dash {
+  to { stroke-dashoffset: -24; }
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes blink {
+  0%, 92%, 100% { transform: scaleY(1); }
+  95% { transform: scaleY(0.1); }
+}
+
+.floaty {
+  animation: floaty 6.5s ease-in-out infinite;
+}
+
+.wiggle {
+  animation: wiggle 5s ease-in-out infinite;
+  transform-origin: 50% 60%;
+}
+
+.rise {
+  animation: rise 700ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.dash-line {
+  stroke-dasharray: 7 9;
+  animation: dash 2.4s linear infinite;
+}
+
+/* ------------------------------------------------------------------ */
+/* ranges                                                              */
+
+.ani-range {
+  -webkit-appearance: none;
+  appearance: none;
+  outline: none;
+  height: 24px;
+  background: transparent;
+}
+
+.ani-range::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 999px;
+  background: #d7d4cb;
+}
+
+.ani-range::-moz-range-track {
+  height: 4px;
+  border-radius: 999px;
+  background: #d7d4cb;
+}
+
+.ani-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 13px;
+  height: 13px;
+  margin-top: -4.5px;
+  border-radius: 999px;
+  background: #4b63ff;
+  border: 2px solid #fefdf9;
+  box-shadow: 0 1px 4px rgba(30, 25, 20, 0.3);
+}
+
+.ani-range::-moz-range-thumb {
+  width: 11px;
+  height: 11px;
+  border-radius: 999px;
+  background: #4b63ff;
+  border: 2px solid #fefdf9;
+}
+
+/* thin scrollbars inside the studio */
+.ani-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #d7d4cb transparent;
+}
+
+.ani-scroll::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.ani-scroll::-webkit-scrollbar-thumb {
+  background: #d7d4cb;
+  border-radius: 99px;
+}
+
+/* paper grain, very quiet */
+.paper-grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+}
+
+/* ------------------------------------------------------------------ */
+/* responsive helpers                                                  */
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .floaty,
+  .wiggle,
+  .dash-line {
+    animation: none;
+  }
 }

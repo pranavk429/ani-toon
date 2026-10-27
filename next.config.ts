@@ -1,14 +1,21 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next';
+
+const isPages = process.env.GITHUB_PAGES === 'true';
 
 const nextConfig: NextConfig = {
-  /* config options here */
-  cacheComponents: true,
-  partialPrefetching: true,
+  // The default build is a normal Next app. The Pages workflow sets
+  // GITHUB_PAGES=true to emit a fully static `out/` directory.
+  output: isPages ? 'export' : undefined,
+  basePath: isPages ? '/ani-toon' : undefined,
+  trailingSlash: isPages ? true : undefined,
+  images: { unoptimized: true },
+  cacheComponents: !isPages,
+  partialPrefetching: !isPages,
   turbopack: {
     rules: {
-      "*.css": {
-        loaders: ["@tailwindcss/turbopack"],
-        as: "*.css",
+      '*.css': {
+        loaders: ['@tailwindcss/turbopack'],
+        as: '*.css',
       },
     },
   },
