@@ -47,7 +47,7 @@ export function WhyCode() {
     <section id="why" className="relative border-t border-line/70 py-20 sm:py-28">
       <div className="mx-auto max-w-[1140px] px-5">
         <div className="mx-auto max-w-[760px] text-center">
-          <p className="mono-label mb-3">03 / the difference</p>
+          <p className="mono-label mb-3">04 / the difference</p>
           <h2 className="font-hand text-[clamp(2.2rem,5vw,4.2rem)] font-bold leading-[1.02] tracking-[-0.03em]">
             Why <span className="text-[#3548d8]">code</span>, not video.
           </h2>

@@ -14,6 +14,7 @@ import { Hero } from './Hero';
 import { Nav } from './Nav';
 import { HowItWorks } from './HowItWorks';
 import { Gallery } from './Gallery';
+import { Voice } from './Voice';
 import { WhyCode } from './WhyCode';
 import { Footer } from './Footer';
 
@@ -332,6 +333,7 @@ export function Landing() {
       </section>
       <HowItWorks />
       <Gallery onPick={pick} />
+      <Voice />
       <WhyCode />
       <Footer />
     </>

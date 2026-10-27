@@ -13,7 +13,7 @@ export function Footer() {
       <div className="relative mx-auto max-w-[1140px] px-5 pb-8 pt-20 sm:pt-28">
         <div className="grid gap-10 lg:grid-cols-[1fr_320px]">
           <div>
-            <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-paper/60">04 / your turn</p>
+            <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-paper/60">05 / your turn</p>
             <div className="relative mt-3 inline-block">
               <h2 className="font-display text-[clamp(3.4rem,10vw,8.5rem)] leading-[0.86] tracking-[-0.03em] text-[#fbf8f0]">
                 make it
