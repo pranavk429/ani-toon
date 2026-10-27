@@ -89,6 +89,8 @@ No environment variables are required.
 
 Wispr Flow is the input layer for the product and the build. Every demo brief is spoken, not typed. In the app, the prompt bar is a normal text field, so Wispr Flow can dictate into it from anywhere; the UI explicitly surfaces the `Fn` + `Space` shortcut. No fake microphone permission prompt, no hidden recording.
 
+![Voice first](docs/voice.png)
+
 ## Design
 
 The visual language is adapted from the measured system of [yashb.xyz](https://yashb.xyz/): warm bone paper `#efece4`, one electric blue accent `#4b63ff`, Shantell Sans for the hand-drawn voice, Space Mono for telemetry, Bagel Fat One for the puffy display lettering, 1140px container, 108px rhythm, hairline borders, and physical pill navigation.
