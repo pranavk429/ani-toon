@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { direct, applyEdit, type DirectorResult } from '../director';
 import { analyzeImage } from '../director/image';
 import { compileScore } from '../motion/score';
@@ -10,13 +10,14 @@ import { readLogo } from '../lib/images';
 import type { Showcase } from '../showcase';
 import type { ChatMessage } from './Studio';
 import { Studio } from './Studio';
-import { Hero } from './Hero';
 import { Nav } from './Nav';
-import { HowItWorks } from './HowItWorks';
-import { Gallery } from './Gallery';
-import { Voice } from './Voice';
-import { WhyCode } from './WhyCode';
-import { Footer } from './Footer';
+import { Hero } from './Hero';
+import { SelectedWork } from './SelectedWork';
+import { About } from './About';
+import { Process } from './Process';
+import { Contact } from './Contact';
+import { StudioOverlay } from './StudioOverlay';
+import { RevealProvider } from './Reveal';
 
 const DEFAULT_BRIEF = 'A cozy bear barista named Mochi for Ember Coffee. Warm, a little sleepy, waves hello and sips a latte.';
 
@@ -42,10 +43,13 @@ export function Landing() {
   const [reference, setReference] = useState<string | null>(null);
   const [shareState, setShareState] = useState<'idle' | 'copied'>('idle');
   const [shareUrl, setShareUrl] = useState<string | null>(null);
+  const [studioOpen, setStudioOpen] = useState(false);
   const timer = useRef<number | null>(null);
   const refUrl = useRef<string | null>(null);
 
   const compiled = useMemo(() => compileScore(result.score, result.genome), [result]);
+  const openStudio = useCallback(() => setStudioOpen(true), []);
+  const closeStudio = useCallback(() => setStudioOpen(false), []);
 
   useEffect(() => {
     return () => {
@@ -75,7 +79,7 @@ export function Landing() {
               notes: ['shared genome', `${decoded.score.beats?.length ?? 0} beats`],
             },
           ]);
-          window.requestAnimationFrame(() => document.getElementById('studio')?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+          setStudioOpen(true);
         }
       } catch {
         /* a broken link just starts the default demo */
@@ -99,12 +103,6 @@ export function Landing() {
     setMessages((m) => [...m, { id: `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`, role, text, notes }]);
   };
 
-  const scrollToStudio = () => {
-    window.requestAnimationFrame(() => {
-      document.getElementById('studio')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
-  };
-
   const generate = (text: string, opts: { image?: boolean; scroll?: boolean } = {}) => {
     const clean = text.trim();
     if (!clean) return;
@@ -115,7 +113,7 @@ export function Landing() {
       setResult(next);
       add('assistant', next.reply, next.notes);
     }, 520);
-    if (opts.scroll) scrollToStudio();
+    if (opts.scroll) setStudioOpen(true);
   };
 
   const [imageSignal, setImageSignal] = useState<Awaited<ReturnType<typeof analyzeImage>> | null>(null);
@@ -131,25 +129,25 @@ export function Landing() {
     }, 320);
   };
 
-  const pick = (s: Showcase) => {
+  const pick = (showcase: Showcase) => {
     const next: DirectorResult = {
-      genome: s.compiled.genome,
-      score: s.compiled.score,
-      reply: `Loaded **${s.compiled.genome.name}** — ${s.compiled.genome.concept}.`,
-      notes: [`${s.compiled.score.beats.length} beats`, s.tags.join(' · ')],
+      genome: showcase.compiled.genome,
+      score: showcase.compiled.score,
+      reply: `Loaded **${showcase.compiled.genome.name}** — ${showcase.compiled.genome.concept}.`,
+      notes: [`${showcase.compiled.score.beats.length} beats`, showcase.tags.join(' · ')],
       intent: 'edit',
     };
-    setBrief(s.brief);
-    setResult({ ...next, score: { ...s.compiled.score, duration: 9000 } });
+    setBrief(showcase.brief);
+    setResult({ ...next, score: { ...showcase.compiled.score, duration: 9000 } });
     setMessages([
       {
         id: `pick-${Date.now()}`,
         role: 'assistant',
-        text: `Loaded **${s.compiled.genome.name}** — ${s.compiled.genome.concept}. This one is already moving; ask for a change, or remix the score.`,
-        notes: [`${s.compiled.score.beats.length} beats`, ...s.tags],
+        text: `Loaded **${showcase.compiled.genome.name}** — ${showcase.compiled.genome.concept}. This one is already moving; ask for a change, or remix the score.`,
+        notes: [`${showcase.compiled.score.beats.length} beats`, ...showcase.tags],
       },
     ]);
-    scrollToStudio();
+    setStudioOpen(true);
   };
 
   const uploadImage = async (file: File) => {
@@ -275,67 +273,45 @@ export function Landing() {
 
   return (
     <>
-      <Nav />
-      <Hero onGenerate={(text) => generate(text, { scroll: true })} onPick={pick} />
+      <RevealProvider />
+      <Nav onOpenStudio={openStudio} />
+      <main>
+        <Hero onPick={pick} onOpenStudio={openStudio} />
+        <SelectedWork onOpen={pick} />
+        <About onOpen={pick} />
+        <Process />
+        <Contact onOpenStudio={openStudio} />
+      </main>
 
-      <section id="studio" className="scroll-mt-24 border-t border-line/70 bg-[#ebe6db] py-16 sm:py-24">
-        <div className="mx-auto max-w-[1140px] px-5">
-          <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p className="mono-label mb-3">00 / live studio</p>
-              <h2 className="max-w-[860px] font-hand text-[clamp(2.1rem,4.6vw,3.7rem)] font-bold leading-[1.02] tracking-[-0.03em]">
-                One brief. One character.
-                <br />
-                One <span className="text-accent">performance.</span>
-              </h2>
-            </div>
-            <div className="flex flex-col items-start gap-1 sm:items-end">
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface/70 px-3 py-1.5 font-mono text-[8.5px] uppercase tracking-[0.1em] text-muted">
-                <span className="h-1.5 w-1.5 rounded-full bg-[#4f8f5b]" />
-                running locally · no key
-              </span>
-              <span className="font-mono text-[8px] uppercase tracking-[0.1em] text-muted">chat to edit · scrub the score</span>
-            </div>
-          </div>
-
-          <Studio
-            result={result}
-            compiled={compiled}
-            brief={brief}
-            setBrief={setBrief}
-            messages={messages}
-            busy={busy}
-            reference={reference}
-            shareState={shareState}
-        shareUrl={shareUrl}
-            onGenerate={(text) => generate(text, { scroll: false })}
-            onCommand={command}
-            onImage={uploadImage}
-            onLogo={uploadLogo}
-            onSpecies={species}
-            onGenome={genome}
-            onScore={score}
-            onRemix={remix}
-            onClearReference={() => {
-              setReference(null);
-              setImageSignal(null);
-              if (refUrl.current) URL.revokeObjectURL(refUrl.current);
-              refUrl.current = null;
-            }}
-            onShare={share}
-            onExportJson={exportJson}
-          />
-
-          <p className="mt-4 text-center font-hand text-[12px] text-muted">
-            Try a change in the chat — “more playful”, “add a scarf”, “make it wave”. Or upload a reference and let the director read its palette.
-          </p>
-        </div>
-      </section>
-      <HowItWorks />
-      <Gallery onPick={pick} />
-      <Voice />
-      <WhyCode />
-      <Footer />
+      <StudioOverlay open={studioOpen} onClose={closeStudio}>
+        <Studio
+          result={result}
+          compiled={compiled}
+          brief={brief}
+          setBrief={setBrief}
+          messages={messages}
+          busy={busy}
+          reference={reference}
+          shareState={shareState}
+          shareUrl={shareUrl}
+          onGenerate={(text) => generate(text, { scroll: false })}
+          onCommand={command}
+          onImage={uploadImage}
+          onLogo={uploadLogo}
+          onSpecies={species}
+          onGenome={genome}
+          onScore={score}
+          onRemix={remix}
+          onClearReference={() => {
+            setReference(null);
+            setImageSignal(null);
+            if (refUrl.current) URL.revokeObjectURL(refUrl.current);
+            refUrl.current = null;
+          }}
+          onShare={share}
+          onExportJson={exportJson}
+        />
+      </StudioOverlay>
     </>
   );
 }

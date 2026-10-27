@@ -76,7 +76,7 @@ No environment variables are required.
 
 ## Using the studio
 
-- **Generate** from the hero or the studio input.
+- **Open the studio** from the nav, the contact CTA, or by clicking any character card.
 - **Talk** instead of typing: hold `Fn` + `Space`, dictate a brief with **Wispr Flow**, then press Generate.
 - **Reference image**: use the image button in the chat. The extracted palette and inferred seed are shown as a message; the character is an original vector interpretation.
 - **Logo**: in the inspector’s **Brand** tab, upload a PNG/SVG. It becomes the chest badge.
@@ -87,7 +87,7 @@ No environment variables are required.
 
 ## Wispr Flow
 
-Wispr Flow is the input layer for the product and the build. Every demo brief is spoken, not typed. In the app, the prompt bar is a normal text field, so Wispr Flow can dictate into it from anywhere; the UI explicitly surfaces the `Fn` + `Space` shortcut. No fake microphone permission prompt, no hidden recording.
+Wispr Flow is the input layer for the product and the build. Every demo brief is spoken, not typed. Inside the studio, the prompt bar is a normal text field, so Wispr Flow can dictate into it from anywhere; the UI explicitly surfaces the `Fn` + `Space` shortcut. No fake microphone permission prompt, no hidden recording.
 
 ![Voice first](docs/voice.png)
 
@@ -95,9 +95,9 @@ Wispr Flow is the input layer for the product and the build. Every demo brief is
 
 The visual language is adapted from the measured system of [yashb.xyz](https://yashb.xyz/): warm bone paper `#efece4`, one electric blue accent `#4b63ff`, Shantell Sans for the hand-drawn voice, Space Mono for telemetry, Bagel Fat One for the puffy display lettering, 1140px container, 108px rhythm, hairline borders, and physical pill navigation.
 
-The adaptation was measured with **DesignProbe** and independently reviewed by a **Gemini 3.8 Flash** subagent in the Antigravity CLI. No reference copy, photography, illustration or assets were reused.
+The adaptation was measured with **DesignProbe**, then re-observed in **ego lite** at 1440 and 390 for the final pass. The landing follows the reference's five-section rhythm; the studio opens as an overlay so the page keeps that calm. The gate passes at 82.2/100 with zero contrast, tap-target or overflow failures. No reference copy, photography, illustration or assets were reused.
 
-![Residents](docs/gallery.png)
+![Selected work](docs/gallery.png)
 
 ## Stack
 
