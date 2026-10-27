@@ -261,6 +261,7 @@ export function direct(brief: string, opts: DirectOptions = {}): DirectorResult 
     ? 'none'
     : findFirst(ACCESSORIES, text);
   const role = roleFor(text, key, prop, outfit);
+  const article = /^[aeiou]/i.test(words[0]) ? 'an' : 'a';
 
   const headMorph = 1 + (rng() - 0.5) * 0.12;
   const eyeMorph = 1 + (rng() - 0.5) * 0.14;
@@ -272,7 +273,7 @@ export function direct(brief: string, opts: DirectOptions = {}): DirectorResult 
     name,
     brand,
     tagline: taglineFor(text, name),
-    concept: `a ${words[0]} ${SPECIES[key].label.toLowerCase()}${role ? ` ${role}` : ''}`,
+    concept: `${article} ${words[0]} ${SPECIES[key].label.toLowerCase()}${role ? ` ${role}` : ''}`,
     head: {
       ...base.head,
       w: base.head.w * headMorph,
@@ -440,7 +441,7 @@ export function applyEdit(command: string, genome: Genome, score: MotionScore): 
   if (sp.explicit && SPECIES[sp.key].label.toLowerCase() !== genome.concept) {
     const swapped = genomeFor(sp.key, {
       ...next,
-      concept: `a ${sp.key} with a new job`,
+      concept: `${sp.key} with a new job`,
     });
     Object.assign(next, swapped);
     notes.push(`${SPECIES[sp.key].label} silhouette`);
