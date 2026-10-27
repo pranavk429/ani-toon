@@ -158,7 +158,7 @@ function StudioStage({
           <button onClick={onShare} className="hidden h-8 w-8 place-items-center rounded-full border border-line bg-surface text-ink/75 transition hover:text-ink sm:grid" aria-label="Copy share link" title="Copy share link">
             {shareState === 'copied' ? <Check size={14} className="text-[#3f7049]" /> : <Copy size={13} />}
           </button>
-          <button onClick={exportSvg} className="hidden h-8 w-8 place-items-center rounded-full border border-line bg-surface text-ink/75 transition hover:text-ink sm:grid" aria-label="Download SVG" title="Download current frame as SVG">
+          <button onClick={exportSvg} className="grid h-8 w-8 place-items-center rounded-full border border-line bg-surface text-ink/75 transition hover:text-ink" aria-label="Download SVG" title="Download current frame as SVG">
             <Download size={13} />
           </button>
           <button onClick={onExportJson} className="hidden h-8 w-8 place-items-center rounded-full border border-line bg-surface text-ink/75 transition hover:text-ink sm:grid" aria-label="Download motion JSON" title="Download genome + score JSON">
