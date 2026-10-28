@@ -1,69 +1,108 @@
 # Design language
 
-Ani adapts the measured visual system of [yashb.xyz](https://yashb.xyz/) to a product studio. The reference was captured at 1440×900 with **DesignProbe**, then re-observed in **ego lite** for the final pass. No reference copy, photography, illustration or asset is reused.
+Anitoon adapts the measured visual system of [Mobbin](https://mobbin.com/) to a small motion library. The reference was captured with **DesignProbe** at 1440×900, then re-observed in **ego lite** at 1440, 768 and 390 for the final pass. No Mobbin copy, screenshots, logo, client mark or font file is reused.
 
 ## Tokens
 
 | Role | Value |
 |---|---|
-| Paper | `#efece4` |
-| Surface | `#fefdf9` |
-| Surface elevated | `#e2d8c6` |
-| Ink | `#111111` |
-| Secondary ink | `#2c2823` |
-| Muted ink | `#6a6253` |
-| Accent | `#4b63ff` |
-| Accent text (AA) | `#3548d8` / `#2f43cc` |
-| Hairline | `#d7d4cb` |
-| Display | Bagel Fat One |
-| Hand / headings | Shantell Sans |
-| Body / UI | Inter |
-| Telemetry | Space Mono |
-| Container | 1140px |
-| Section rhythm | 108px |
-| Radii | 3 / 13 / 15 / 17 / 18 / 24 / 28 / full |
-| Base unit | 8px |
+| Canvas | `#ffffff` |
+| Ink | `#141414` |
+| Secondary text | `#707070` |
+| Muted / decorative | `#adadad` |
+| Tile | `#f2f2f2` |
+| Large surface | `#f5f5f5` |
+| Hairline | `rgba(20, 20, 20, 0.10)` |
+| Strong hairline | `rgba(20, 20, 20, 0.18)` |
+| Display / UI | Switzer variable |
+| Container | 1045px |
+| Navigation | 88px |
+| Body copy | 16px / 1.5 |
+| Radius | 12 / 18 / 20 / 24 / 30 / 999px |
+| Base unit | 4px |
+| Dominant easing | `cubic-bezier(0, 0, 0.2, 1)` |
+
+No UI accent. Colour belongs to the clips; the chrome stays monochrome.
+
+## Type
+
+Switzer variable is the closest free metric match to Saans (90.8/100 in the reference matcher). It is self-hosted through `next/font/local`.
+
+| Role | Size | Weight | Line height | Tracking |
+|---|---|---|---|---|
+| Display | 80px → 56 → 40 | 650 | 1.0 | -0.6px at 80 |
+| Heading | 44 / 32 | 650 | 1.09 | -0.4px |
+| Large CTA | 56 / 40 | 650 | 1.0 | -0.6px |
+| Title | 24 | 600 | 1.2 | -0.015em |
+| Lede | 20 | 400 | 1.3 | 0 |
+| Body | 16 | 450 | 1.5 | 0 |
+| Small | 14 | 450 | 1.45 | 0 |
+| Caption | 12 | 500 | 1.35 | 0.2px |
+| Nav / buttons | 16 | 600 | 1.0 | 0.2px |
+
+The reference uses Saans at weight 652, 80px/80px, tracking -0.6px. Switzer is set to 650 with the same optical tracking so the headings feel like the reference rather than a generic grotesque.
 
 ## Page structure
 
-The landing is five sections, one narrative:
+The landing is nine sections, one narrative:
 
-1. **Hero** — a 3D latex `ANI` wordmark drawn as inline SVG, two hand-drawn squiggles, a blue crown, a sparkle, a small bomb, a one-line intro, and four fanned character cards.
-2. **Selected work** — section seal + 68px heading + lede + tactile tab toggle + two project rows (live vector panel left, title/description/chips/action right). The tabs switch between brand mascots and studio cuts.
-3. **About the studio** — two-column story + rotated portrait card + a GitHub-style motion graph + a two-row motion-channel marquee.
-4. **How it works** — a four-row process list (Brief → Director → Compiler → Renderer) with icon tiles, role, description, chips and a date/telemetry column.
-5. **Contact** — centered 60px closing line, black pill CTA, four social tiles, a rotated blue “Thanks for scrolling!” sticker, and mono microcopy.
+1. **Hero** — oversized headline with three real clip thumbnails, paired black/light pills, challenge note.
+2. **Library frame** — a working product preview: autoplaying 60fps clip, selectable side list, about panel, metadata, play action.
+3. **Statement** — “Stock footage gives you pixels. Anitoon gives you motion.”
+4. **Bento** — six product truths: 60fps, frame-accurate, spec included, live render, 1080 × 1080, take it out.
+5. **The first drop** — three real clip cards with posters, metadata and specs.
+6. **Play. Inspect. Take it.** — three-step workflow.
+7. **No hands. No filler.** — the Wispr Flow build story.
+8. **Honest band** — quote, 3 / 60 / 0 facts, no fake social proof.
+9. **Final CTA** — “Take the first drop for a spin.”
 
-The studio is no longer a page section. It opens as a full-screen paper overlay from the nav CTA, any character card, or the closing CTA, so the landing keeps the reference's calm rhythm.
+A black footer with a rounded top and oversized wordmark closes the page.
 
-## What was carried over
+## Motion
 
-- Warm bone canvas, charcoal text, **one** electric-blue accent.
-- Puffy display lettering with a warm extrusion, soft floor shadow, clipped latex highlights and a blue crown.
-- Floating pill navigation with a moving ink thumb and a compact black CTA.
-- Pinned/fanned cards, hand-drawn underlines, seal-shaped section tags and small physical props.
-- Editorial spacing, 1140px container, hairline borders, low-contrast shadows, 3px default radii.
-- One dominant motion language: 450ms springy state changes, 700ms reveal, continuous idle float, reduced-motion support.
+- State changes: 150ms `cubic-bezier(0, 0, 0.2, 1)`.
+- Entrance: 800ms `cubic-bezier(0.19, 1, 0.22, 1)`, 80ms stagger.
+- Hero chips: 440ms scale 0.72 → 1.02 → 1 with blur 7px.
+- 60fps preview: autoplays only while the library frame is in view; pauses offscreen.
+- Reduced motion: previews fall back to posters; the live SVG render freezes on a representative frame; CSS animations/transitions are disabled.
 
-## What changed for the product
+## Brand substitutions
 
-- The giant word is **ANI**, not a person's name; the fanned cards are generated mascots, not project screenshots.
-- The project rows are live SVG performances, not static screenshots. The media panels have a live-vector chip, a beat/time chip and an “Open in studio” hover action.
-- The contribution graph is a **motion graph**: 53 weeks × 7 days of generated beat activity, with a `60 fps` badge.
-- The tech stack is a **motion stack**: 18 channel names in two marquee rows (lift, squash, lean, gaze, lid, breath, follow-through…), not a tool logo wall.
-- The experience list becomes the product pipeline, with the same row rhythm and dates.
-- The studio is a product surface inside an overlay: director chat, live stage, score/genome views, timeline, brand kit, image and logo ingest.
+| Reference | Anitoon |
+|---|---|
+| Mobbin bird mark / wordmark | Original play mark + “anitoon” wordmark |
+| Saans | Switzer variable, self-hosted |
+| App-icon hero chips | Real Anitoon clip thumbnails |
+| Product screenshots | Working library frame with a 60fps preview |
+| Client logos, testimonials, MCP, pricing, login | Removed entirely |
 
 ## Quality checks
 
-- DesignProbe gate: **PASS** — structural **82.2/100** (budget 80).
-- Contrast: **0 failures**.
-- Tap targets: **0 under 24×24**.
-- Focus visible: **100%** (24/24).
-- Horizontal overflow at 390: **0px**.
-- CLS: **0.000**.
-- Transfer: **373KB** (production), 15 requests.
-- Page height at 1440: **~5740px**; reference: 5782px.
-- Section heights: hero 915, work 1565, about 1170, process 1269, contact 821.
+Measured in a production build with **DesignProbe**, then re-observed in **ego lite** at 1440, 768 and 390.
 
-The remaining gate suggestions are structural, not visual: the reference is a portfolio with 52 panels and 39 `<img>` photos, while Ani is an interactive studio with SVG characters and a real overlay product surface. No functional links, controls or content were deleted to chase those counts.
+| Check | Result |
+|---|---|
+| Structural | **88.8 / 100 — PASS** (budget 80) |
+| Contrast | 0 failures |
+| Tap targets | 0 under 24×24 |
+| Focus visible | 100% (32/32) |
+| Horizontal overflow @390 | 0px |
+| CLS | 0.000 |
+| Transfer | 420KB / 600KB |
+| Requests | 18 |
+| Page height @1440 | ~7148px |
+
+The remaining gate suggestions are component-count deltas. Mobbin is a large design library with 261 images; Anitoon is a deliberate three-clip drop. Adding filler would violate the product’s no-fake-content rule, so the count is left honest.
+
+## Accessibility
+
+- Every interactive element has hover and `:focus-visible` states.
+- The viewer closes on Escape and returns focus to the trigger.
+- The viewer locks background scroll.
+- The preview pauses offscreen and respects `prefers-reduced-motion`.
+- Body copy and captions meet 4.5:1 contrast; decorative muted text is not used for meaning.
+- Mobile tap targets are at least 24×24px; primary actions are 44px.
+
+## What the design is not
+
+No gradients, glassmorphism, purple SaaS glow, mascot library, or invented social proof. The colour in the page comes from the clips; the system around them stays quiet.

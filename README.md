@@ -1,125 +1,171 @@
-# Ani — mascots that move
+# Anitoon
 
-**Live:** [pranavk429.github.io/ani-toon](https://pranavk429.github.io/ani-toon/) · **Repo:** [pranavk429/ani-toon](https://github.com/pranavk429/ani-toon)
+**A small library of 60fps, code-rendered motion clips.**
 
-**Describe a feeling. Meet a character that moves like it means it.**
+[Live demo](https://pranavk429.github.io/ani-toon/) · [GitHub](https://github.com/pranavk429/ani-toon) · [The viewer](#the-viewer) · [Run locally](#run-locally) · [Design system](docs/DESIGN.md)
 
-Ani is a no-code mascot studio. You type — or speak with **Wispr Flow** — a short brand brief. Ani invents an original vector creature and writes a one-of-a-kind performance for it, then renders every frame live in the browser.
+Built for the **Wispr No Hands Challenge** by WeMakeDevs — **Track 2: No-Code**, October 2026.
 
-No mascot library. No canned move list. No video model. No server. No API key.
+![Anitoon hero](docs/hero.png)
 
-![Ani hero](docs/hero.png)
+## What it is
 
-## The 30-second version
+Anitoon is a deliberately small motion library: **three clips, three specs, every frame at 60fps**.
 
-1. A brief goes in: *“A cozy bear barista named Mochi for Ember Coffee. Warm, a little sleepy, waves hello and sips a latte.”*
-2. The **director** turns it into a **creature genome** (head, ears, face, body, palette, outfit, prop, personality) and a **motion score** (beats, timing, weight, gaze, blinks, accents).
-3. The **compiler** layers those beats with breath, weight shift, follow-through, blinks and idle life.
-4. The **renderer** draws true SVG at 60fps — about 10KB for the exported frame, not a video.
+Each clip is a real render with the JSON that made it. You can watch the MP4, read the spec, or run the same spec as a live SVG render. No stock footage, no fake logo wall, no 100,000-clip promise — just the first drop, with the receipts.
 
-## What makes it different
+- **60fps** — rendered from one clock, not sampled from a GIF.
+- **1080 × 1080** — a square stage for feeds, product pages and app heroes.
+- **Spec included** — the source JSON is part of the clip.
+- **Two outputs** — the finished MP4 and the live SVG render.
+- **No account, no uploads, no analytics** — the site is a static page.
 
-- **Generative, not selective.** Species presets are seeds, not a gallery. A seeded genome morphs proportions, palette, personality and details on every generation. The same brief never produces the exact same performance twice.
-- **A motion language, not a clip library.** Beats are channel-level poses (arm angle, lean, gaze, lid, prop tilt). They are mirrored, stretched, scaled by personality and overlapped, then surrounded by procedural idle motion and follow-through. There is no “wave.mp4”.
-- **Real vector output.** Every mascot is SVG geometry. Transparent, crisp at any size, editable, tiny. Export the current frame as `.svg` or the full genome + score as `.json`.
-- **Image input.** Drop a reference. Ani reads its palette, chroma and temperature in the browser, infers a creature seed, and builds an original interpretation — never a pixel trace. A separate logo upload is placed exactly on the chest badge and scales with the SVG.
-- **Chat editing.** “More playful.” “Add a scarf.” “Make it wave.” “Warmer colors.” “Remove the prop.” The same character changes, and the score recompiles.
-- **Honest constraints.** No account, no upload, no network call, no key. The whole studio works offline after the page loads.
+## The first drop
 
-![The studio](docs/studio.png)
+| | | |
+| :---: | :---: | :---: |
+| <img src="public/images/chef-poster.webp" width="230" alt="Pancake Catch — a chef flipping a pancake"> | <img src="public/images/garden-poster.webp" width="230" alt="Garden Bloom — a gardener watering a sprout"> | <img src="public/images/reveal-poster.webp" width="230" alt="Champion Reveal — a footballer celebrating"> |
+| **Pancake Catch** | **Garden Bloom** | **Champion Reveal** |
+| Marco · Character · 9.6s | Maya · Scene · 10.0s | Leo · Reveal · 9.0s |
+| [spec](public/specs/chef-demo.json) · [MP4](public/videos/chef.mp4) | [spec](public/specs/garden-demo.json) · [MP4](public/videos/garden.mp4) | [spec](public/specs/reveal-demo.json) · [MP4](public/videos/reveal.mp4) |
+
+Every clip is also available in the live viewer with a full-resolution preview, the spec JSON, and the live SVG render.
+
+## The viewer
+
+![Anitoon viewer](docs/viewer.png)
+
+The viewer has three tabs on the same clip:
+
+1. **Preview** — the finished 60fps MP4.
+2. **Spec** — the real JSON, with a copy button.
+3. **Live SVG** — the same spec compiled and rendered live in the browser.
+
+The download button gives you the MP4; the copy button gives you the exact spec. No proprietary export format and no locked player.
+
+## The library
+
+![Anitoon library](docs/library.png)
+
+The landing is a working library, not a screenshot of one:
+
+- The hero product frame autoplays the selected clip at 60fps.
+- Selecting a row switches the clip, the preview, the copy and the metadata.
+- The preview pauses when it leaves the viewport.
+- The library cards open the full viewer.
+- Everything is keyboard accessible, and reduced-motion users get the poster instead of autoplay.
+
+<p align="center">
+  <img src="docs/mobile.png" width="300" alt="Anitoon on a 390px viewport">
+</p>
+<p align="center"><em>390px: one column, same viewer, no horizontal overflow.</em></p>
 
 ## How it works
 
-```
-brief / image
-      │
-      ▼
-┌──────────────┐     words → traits      ┌──────────────┐
-│   director   │ ──────────────────────▶ │    genome    │
-│  parse/edit  │                         │  proportions │
-└──────┬───────┘                         │  palette     │
-       │                                 │  personality │
-       │ verbs → beats                   └──────┬───────┘
-       ▼                                        │
-┌──────────────┐    layer idle + follow-through │
-│ motion score │ ───────────────┐               │
-│ beats, gaze  │                ▼               ▼
-│ blinks       │          ┌────────────────────────┐
-└──────────────┘          │      compiler           │
-                          │  flow / swing / blink   │
-                          └───────────┬────────────┘
-                                      ▼
-                          ┌────────────────────────┐
-                          │    SVG renderer        │
-                          │  one clock → one pose  │
-                          └────────────────────────┘
-```
+1. **Browse** — open the first drop and watch a clip.
+2. **Inspect** — read the spec or switch to the live SVG render.
+3. **Take it** — download the MP4, copy the spec, or use the live render.
 
-The motion engine is a web port of the [Rossark motion method](https://github.com/rossark0/rossark-motion-skill): one clock, eased `flow` poses, follow-through by delay, seeded idle layers, asymmetric blinks, weight shift with leg compensation, and volume-preserving squash.
+## Built for the challenge
 
-## Run it
+The Wispr challenge asked for a build without typing. The clips, the specs and this page were directed with **Wispr Flow**.
+
+The site tells that story once and then gets out of the way. It does **not** request a microphone, fake a product integration or claim a company logo wall. The voice was the build tool; the library is the product.
+
+**Not a SaaS:** no pricing, no login, no MCP server, no fake customers, no invented case studies. Just a small, honest motion library.
+
+## Design
+
+The visual system is adapted from the measured language of [Mobbin](https://mobbin.com/):
+
+- white canvas, ink `#141414`, secondary `#707070`, tile `#f2f2f2`
+- **Switzer variable** (the closest free metric match to Saans) at the measured weights
+- 80/44/24/20/16/14/12 type ramp, tight display tracking, 1045px container
+- 30px cards, black pills, hairline borders, 150ms state motion
+- oversized headline with inline clip thumbnails, six-tile bento, gray quote band, rounded black footer
+
+The full token and component notes are in [docs/DESIGN.md](docs/DESIGN.md). No Mobbin copy, screenshots, logo, client marks or font files are used.
+
+## Run locally
 
 ```bash
 pnpm install
 pnpm dev
 ```
 
-Open `http://localhost:3000`.
+Open [http://localhost:3000](http://localhost:3000).
 
 ```bash
 pnpm build      # production build
 pnpm start      # serve the production build
 pnpm lint
+pnpm typecheck
 ```
 
 No environment variables are required.
 
-## Using the studio
+## Verification
 
-- **Open the studio** from the nav, the contact CTA, or by clicking any character card.
-- **Talk** instead of typing: hold `Fn` + `Space`, dictate a brief with **Wispr Flow**, then press Generate.
-- **Reference image**: use the image button in the chat. The extracted palette and inferred seed are shown as a message; the character is an original vector interpretation.
-- **Logo**: in the inspector’s **Brand** tab, upload a PNG/SVG. It becomes the chest badge.
-- **Edit by chat**: try the suggestion chips, or type your own instruction.
-- **Scrub**: click the score blocks or drag the transport slider.
-- **Inspect**: switch the stage to `SCORE` or `GENOME` to see the generated data.
-- **Export**: SVG (current frame) from the stage toolbar, JSON (genome + score) from the Brand tab, or copy a share link.
+Measured in a production build with **DesignProbe** and re-checked in **ego lite** at 1440, 768 and 390.
 
-## Wispr Flow
+```text
+Structural     88.8 / 100   PASS (budget 80)
+Contrast        0 failures
+Tap targets     0 under 24px
+Focus visible   100% (32/32)
+Overflow @390   0px
+CLS             0.000
+Transfer        420KB / 600KB
+Requests        18
+```
 
-Wispr Flow is the input layer for the product and the build. Every demo brief is spoken, not typed. Inside the studio, the prompt bar is a normal text field, so Wispr Flow can dictate into it from anywhere; the UI explicitly surfaces the `Fn` + `Space` shortcut. No fake microphone permission prompt, no hidden recording.
+The gate’s remaining suggestions are component-count deltas: Mobbin is a large design library with 261 images, while Anitoon is a deliberate three-clip drop. Adding filler would break the “no fake content” rule, so the count is left honest.
 
-![Voice first](docs/voice.png)
+Run it yourself:
 
-## Design
+```bash
+pnpm dev
+designprobe-plugin gate --project . --url http://localhost:3000
+```
 
-The visual language is adapted from the measured system of [yashb.xyz](https://yashb.xyz/): warm bone paper `#efece4`, one electric blue accent `#4b63ff`, Shantell Sans for the hand-drawn voice, Space Mono for telemetry, Bagel Fat One for the puffy display lettering, 1140px container, 108px rhythm, hairline borders, and physical pill navigation.
+## Project structure
 
-The adaptation was measured with **DesignProbe**, then re-observed in **ego lite** at 1440 and 390 for the final pass. The landing follows the reference's five-section rhythm; the studio opens as an overlay so the page keeps that calm. The gate passes at 82.2/100 with zero contrast, tap-target or overflow failures. No reference copy, photography, illustration or assets were reused.
+```text
+src/app/                  Next.js routes, layout, global tokens
+src/components/anitoon/   Landing, library, viewer, footer
+src/data/clips.ts         The three clips and their metadata
+src/toon/                 SVG motion engine + live renderer
+public/videos/            Full 1080p MP4s + 600px 60fps previews
+public/specs/             The source specs for every clip
+public/images/            Posters and hero thumbnails
+docs/                     Screenshots and design notes
+```
 
-![Selected work](docs/gallery.png)
+## Deploy
+
+**GitHub Pages** — push to `main`. The workflow in `.github/workflows/pages.yml` builds with `GITHUB_PAGES=true`, writes `out/`, and deploys to:
+
+```text
+https://pranavk429.github.io/ani-toon/
+```
+
+**Vercel / any Next host** — import the repo, run `pnpm build`, and serve. Set `NEXT_PUBLIC_SITE_URL` to the final domain if you want absolute OG metadata.
 
 ## Stack
 
 - Next.js 16 (App Router, static-renderable) + React 19 + TypeScript
 - Tailwind CSS v4 with the measured design tokens
-- Hand-built SVG renderer; no animation library at runtime
-- `next/font` for self-hosted Inter, Shantell Sans, Space Mono and Bagel Fat One
-- Everything client-side. No database, server action, API key or analytics.
-
-## Known limits
-
-- The local director is a deterministic language + trait engine, not an LLM. It is intentionally zero-key and reliable for a live demo.
-- Image reading extracts palette, chroma, temperature and a hue-based creature seed; it does not do semantic vision or facial reconstruction. The result is an original interpretation, not a trace.
-- Shared links encode the genome + score in the URL (about 3KB); logo image data is not included.
-- Exported SVG is the current frame, not a video or an SMIL timeline. The JSON is the canonical, replayable artifact.
+- `next/font/local` for Switzer
+- Hand-built SVG motion engine; no animation library at runtime
+- Real 60fps MP4s, real JSON specs, no database or server
 
 ## Credits
 
-- Motion method inspired by [rossark0/rossark-motion-skill](https://github.com/rossark0/rossark-motion-skill) (MIT).
-- Design reference: [yashb.xyz](https://yashb.xyz/) (aesthetic study only; no assets or copy).
-- Typefaces: Inter, Shantell Sans, Space Mono, Bagel Fat One, via Google Fonts / `next/font`.
-- Built for the **WeMakeDevs × Wispr Flow** challenge, **Track 2 — No-Code**.
+- **Challenge:** [Wispr Flow](https://wisprflow.ai/) × [WeMakeDevs](https://www.wemakedevs.org/wispr)
+- **Design reference:** [Mobbin](https://mobbin.com/) — aesthetic study only; no assets, copy or fonts reused
+- **Typeface:** Switzer via Fontshare (ITF Free Font License)
+- **Icons:** Lucide
+- **Motion method:** inspired by [rossark0/rossark-motion-skill](https://github.com/rossark0/rossark-motion-skill) (MIT)
 
 ## License
 
