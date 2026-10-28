@@ -1,0 +1,52 @@
+{
+  "title": "Leo mystery drop and soccer kick",
+  "duration": 9000,
+  "character": {
+    "name": "Leo",
+    "skin": "#F5B092",
+    "hair": "#3B261A",
+    "hairStyle": "quiff",
+    "accessory": "none",
+    "accessoryColor": "#FFFFFF",
+    "top": "#FF4B4B",
+    "topShade": "#D92B2B",
+    "bottom": "#1453A3",
+    "shoe": "#33333B",
+    "pattern": "stripes"
+  },
+  "world": {
+    "preset": "sky",
+    "accent": "#4B63FF"
+  },
+  "prop": {
+    "kind": "ball",
+    "color": "#FFFFFF"
+  },
+  "beats": [
+    {
+      "at": 200,
+      "verb": "mystery",
+      "dur": 1900
+    },
+    {
+      "at": 2200,
+      "verb": "drop-in",
+      "dur": 1100
+    },
+    {
+      "at": 3600,
+      "verb": "wave",
+      "dur": 1600
+    },
+    {
+      "at": 5800,
+      "verb": "kick",
+      "dur": 900
+    },
+    {
+      "at": 7200,
+      "verb": "cheer",
+      "dur": 1600
+    }
+  ]
+}

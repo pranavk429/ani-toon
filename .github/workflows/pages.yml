@@ -1,4 +1,4 @@
-name: Deploy Ani to GitHub Pages
+name: Deploy Anitoon to GitHub Pages
 
 on:
   push:

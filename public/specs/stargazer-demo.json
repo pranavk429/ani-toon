@@ -1,0 +1,25 @@
+{
+  "title": "Nova captures the falling star",
+  "duration": 9600,
+  "character": {
+    "name": "Nova",
+    "skin": "#F5B092",
+    "hair": "#2D232E",
+    "hairStyle": "short",
+    "accessory": "beanie",
+    "accessoryColor": "#FF7A6B",
+    "top": "#2A3B66",
+    "topShade": "#1C2747",
+    "bottom": "#202636",
+    "shoe": "#161B26",
+    "pattern": "badge"
+  },
+  "world": { "preset": "night", "accent": "#FFD84D" },
+  "prop": { "kind": "star", "color": "#FFF275" },
+  "beats": [
+    { "at": 400, "verb": "peer", "dur": 1800 },
+    { "at": 2400, "verb": "gasp", "dur": 1400 },
+    { "at": 4000, "verb": "star-catch", "dur": 2800 },
+    { "at": 7000, "verb": "hug", "dur": 2200 }
+  ]
+}

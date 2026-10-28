@@ -1,0 +1,43 @@
+{
+  "title": "Maya waters the magical garden",
+  "duration": 10000,
+  "character": {
+    "name": "Maya",
+    "skin": "#D9966E",
+    "hair": "#2B2433",
+    "hairStyle": "bun",
+    "accessory": "sun-hat",
+    "accessoryColor": "#FFC6D3",
+    "top": "#FF7A6B",
+    "topShade": "#FF523B",
+    "bottom": "#4A90E2",
+    "shoe": "#37AD74",
+    "pattern": "overalls"
+  },
+  "world": {
+    "preset": "garden",
+    "accent": "#7DC46C"
+  },
+  "prop": {
+    "kind": "watering-can",
+    "color": "#3BB8C7"
+  },
+  "beats": [
+    {
+      "at": 600,
+      "verb": "look",
+      "dur": 1000,
+      "target": "down"
+    },
+    {
+      "at": 1800,
+      "verb": "pour",
+      "dur": 1600
+    },
+    {
+      "at": 3700,
+      "verb": "bloom",
+      "dur": 5300
+    }
+  ]
+}

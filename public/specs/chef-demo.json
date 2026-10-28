@@ -1,0 +1,25 @@
+{
+  "title": "Chef Marco flips and catches on hat",
+  "duration": 9600,
+  "character": {
+    "name": "Marco",
+    "skin": "#F5B092",
+    "hair": "#4A2C1C",
+    "hairStyle": "short",
+    "accessory": "chef-hat",
+    "accessoryColor": "#FFFFFF",
+    "top": "#FFFFFF",
+    "topShade": "#DCE5EF",
+    "bottom": "#33333B",
+    "shoe": "#33333B",
+    "pattern": "chef"
+  },
+  "world": { "preset": "kitchen", "accent": "#33B2A6" },
+  "prop": { "kind": "pancake", "color": "#F7CF78" },
+  "beats": [
+    { "at": 600, "verb": "look", "dur": 1100, "target": "down" },
+    { "at": 1900, "verb": "toss", "dur": 1800 },
+    { "at": 4000, "verb": "nod", "dur": 900 },
+    { "at": 5100, "verb": "hat-catch", "dur": 3600 }
+  ]
+}

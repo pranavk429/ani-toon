@@ -1,0 +1,32 @@
+{
+  "title": "Crumb & Co. — Fresh Cookies",
+  "duration": 9800,
+  "character": {
+    "name": "Barnaby",
+    "skin": "#F5B092",
+    "hair": "#4A2C1C",
+    "hairStyle": "short",
+    "accessory": "mustache",
+    "accessoryColor": "#FFFFFF",
+    "top": "#C85A32",
+    "topShade": "#A84622",
+    "bottom": "#2B3A4A",
+    "shoe": "#222C38",
+    "pattern": "apron"
+  },
+  "world": {
+    "preset": "kitchen",
+    "accent": "#D97736"
+  },
+  "prop": {
+    "kind": "gift",
+    "color": "#F4A261"
+  },
+  "beats": [
+    { "at": 800, "verb": "look", "dur": 1100, "target": "down" },
+    { "at": 2300, "verb": "toss", "dur": 1900 },
+    { "at": 4700, "verb": "shrug", "dur": 1000 },
+    { "at": 6200, "verb": "look", "dur": 1000, "target": "viewer" },
+    { "at": 7600, "verb": "wink", "dur": 800 }
+  ]
+}

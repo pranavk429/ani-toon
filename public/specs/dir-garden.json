@@ -1,0 +1,32 @@
+{
+  "title": "Sprout: A gentle gardener welcomes you",
+  "duration": 9600,
+  "character": {
+    "name": "Sage",
+    "skin": "#F5B092",
+    "hair": "#3B2618",
+    "hairStyle": "bun",
+    "accessory": "sun-hat",
+    "accessoryColor": "#F4E3B2",
+    "top": "#52B788",
+    "topShade": "#3D8C66",
+    "bottom": "#2D4B66",
+    "shoe": "#4A3327",
+    "pattern": "overalls"
+  },
+  "world": {
+    "preset": "garden",
+    "accent": "#2D6A4F"
+  },
+  "prop": {
+    "kind": "none",
+    "color": "#52B788"
+  },
+  "beats": [
+    { "at": 500, "verb": "look", "dur": 800, "target": "viewer" },
+    { "at": 1700, "verb": "wave", "dur": 1700 },
+    { "at": 4500, "verb": "point", "dur": 1400, "target": "right" },
+    { "at": 6300, "verb": "nod", "dur": 900 },
+    { "at": 7600, "verb": "cheer", "dur": 1300 }
+  ]
+}

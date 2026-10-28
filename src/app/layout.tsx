@@ -1,32 +1,46 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
-import { Inter, Shantell_Sans, Space_Mono, Bagel_Fat_One } from 'next/font/google';
+import localFont from 'next/font/local';
+import { asset } from '../lib/asset';
 import './globals.css';
 
-const inter = Inter({ variable: '--ff-inter', subsets: ['latin'], display: 'swap' });
-const hand = Shantell_Sans({ variable: '--ff-hand', subsets: ['latin'], weight: ['400', '500', '600', '700', '800'], display: 'swap' });
-const mono = Space_Mono({ variable: '--ff-mono', subsets: ['latin'], weight: ['400', '700'], display: 'swap' });
-const display = Bagel_Fat_One({ variable: '--ff-display', subsets: ['latin'], weight: ['400'], display: 'swap' });
+const switzer = localFont({
+  src: '../fonts/switzer-variable.woff2',
+  variable: '--font-switzer',
+  weight: '100 900',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
-  title: 'Ani — mascots that move',
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'https://pranavk429.github.io'),
+  title: 'Anitoon — a 60fps motion clip library',
   description:
-    'Type a brand thought. Ani invents an original vector mascot and writes a one-of-a-kind performance for it. No templates, no video models — just code.',
-  keywords: ['mascot generator', 'SVG animation', 'brand character', 'Wispr Flow', 'AI motion'],
+    'A small library of 60fps, code-rendered motion clips. Play them, scrub them, inspect the spec, and take the motion into your own work. Built for the Wispr No Hands Challenge.',
+  keywords: ['Anitoon', '60fps', 'motion clips', 'animation library', 'motion design', 'Wispr Flow', 'hackathon'],
+  authors: [{ name: 'Anitoon' }],
   openGraph: {
-    title: 'Ani — mascots that move',
-    description: 'Describe a feeling. Meet a character that moves like it means it.',
+    title: 'Anitoon — a 60fps motion clip library',
+    description:
+      'Three clips. Three specs. Every frame at 60fps. A small, honest motion library built for the Wispr No Hands Challenge.',
     type: 'website',
+    images: [{ url: asset('/og.png'), width: 1200, height: 630, alt: 'Anitoon — clips that feel alive at 60fps' }],
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Anitoon — a 60fps motion clip library',
+    description: 'Three clips. Three specs. Every frame at 60fps.',
+    images: [asset('/og.png')],
+  },
+};
+
+export const viewport = {
+  themeColor: '#ffffff',
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html
-      lang="en"
-      className={`${inter.variable} ${hand.variable} ${mono.variable} ${display.variable} h-full scroll-smooth antialiased`}
-    >
-      <body className="min-h-full bg-paper font-sans text-ink">{children}</body>
+    <html lang="en" className={switzer.variable}>
+      <body>{children}</body>
     </html>
   );
 }

@@ -1,0 +1,26 @@
+{
+  "title": "Tide catches a star for Beacon House",
+  "duration": 10800,
+  "character": {
+    "name": "Tide",
+    "skin": "#E8B48C",
+    "hair": "#2A3550",
+    "hairStyle": "short",
+    "accessory": "beanie",
+    "accessoryColor": "#F4C95D",
+    "top": "#F4C95D",
+    "topShade": "#D9A62E",
+    "bottom": "#1E3A5F",
+    "shoe": "#2A2A33",
+    "pattern": "stripes"
+  },
+  "world": { "preset": "night", "accent": "#F4C95D" },
+  "prop": { "kind": "star", "color": "#FFF1A8" },
+  "beats": [
+    { "at": 400, "verb": "peer", "dur": 1600 },
+    { "at": 2200, "verb": "gasp", "dur": 1200 },
+    { "at": 3600, "verb": "star-catch", "dur": 2800 },
+    { "at": 6600, "verb": "hug", "dur": 2000 },
+    { "at": 8800, "verb": "wave", "dur": 1600 }
+  ]
+}

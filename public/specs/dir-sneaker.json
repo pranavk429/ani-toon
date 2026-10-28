@@ -1,0 +1,32 @@
+{
+  "title": "Jax boots the ball for Kicks&Co",
+  "duration": 9600,
+  "character": {
+    "name": "Jax",
+    "skin": "#E8A882",
+    "hair": "#1F1D2B",
+    "hairStyle": "curly",
+    "accessory": "cap",
+    "accessoryColor": "#1F1D2B",
+    "top": "#FFFFFF",
+    "topShade": "#DDE3EA",
+    "bottom": "#1F1D2B",
+    "shoe": "#FF4500",
+    "pattern": "badge"
+  },
+  "world": {
+    "preset": "studio",
+    "accent": "#FF4500"
+  },
+  "prop": {
+    "kind": "ball",
+    "color": "#FFFFFF"
+  },
+  "beats": [
+    { "at": 600, "verb": "hop", "dur": 750 },
+    { "at": 2800, "verb": "kick", "dur": 900 },
+    { "at": 3900, "verb": "hip", "dur": 1600 },
+    { "at": 5900, "verb": "cheer", "dur": 1500 },
+    { "at": 7700, "verb": "nod", "dur": 800 }
+  ]
+}

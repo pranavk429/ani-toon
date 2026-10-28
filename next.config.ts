@@ -7,6 +7,9 @@ const nextConfig: NextConfig = {
   // GITHUB_PAGES=true to emit a fully static `out/` directory.
   output: isPages ? 'export' : undefined,
   basePath: isPages ? '/ani-toon' : undefined,
+  env: {
+    NEXT_PUBLIC_BASE_PATH: isPages ? '/ani-toon' : '',
+  },
   trailingSlash: isPages ? true : undefined,
   images: { unoptimized: true },
   cacheComponents: !isPages,

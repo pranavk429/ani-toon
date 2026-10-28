@@ -1,5 +1,5 @@
-import { Landing } from '@/components/Landing';
+import { AnitoonLanding } from '@/components/anitoon/Landing';
 
 export default function Home() {
-  return <Landing />;
+  return <AnitoonLanding />;
 }
