@@ -1,168 +1,86 @@
-# Anitoon
+# Anitoon — Project One
 
-**A small library of 60fps, code-rendered motion clips.**
+**Describe a person. Watch them move.**
 
-[Live demo](https://pranavk429.github.io/ani-toon/) · [GitHub](https://github.com/pranavk429/ani-toon) · [The viewer](#the-viewer) · [Run locally](#run-locally) · [Design system](docs/DESIGN.md)
+Anitoon is a human motion compiler and AI-directed vector animation studio. One sentence
+becomes a **human genome** — presentation, hair, face, body, outfit — plus a performance
+score. A local compiler builds the skeleton and performs every beat at 60fps. A second
+studio mode animates imported SVGs with the same deterministic runtime.
+
+- **Live:** https://pranavk429.github.io/ani-toon/
+- **Repo:** https://github.com/pranavk429/ani-toon
+- **Local:** http://localhost:3000
 
 Built for the **Wispr No Hands Challenge** by WeMakeDevs — **Track 2: No-Code**, October 2026.
 
-![Anitoon hero](docs/hero.png)
+## The thesis
 
-## What it is
+> **The AI is the art director. The compiler is the animator.**
 
-Anitoon is a deliberately small motion library: **three clips, three specs, every frame at 60fps**.
+The model writes a genome and a timed score. The compiler builds the skeleton, attaches
+actors, and performs every frame. It is construction, not retrieval from a fixed gallery.
 
-Each clip is a real render with the JSON that made it. You can watch the MP4, read the spec, or run the same spec as a live SVG render. No stock footage, no fake logo wall, no 100,000-clip promise — just the first drop, with the receipts.
+The human demo ships with:
 
-- **60fps** — rendered from one clock, not sampled from a GIF.
-- **1080 × 1080** — a square stage for feeds, product pages and app heroes.
-- **Spec included** — the source JSON is part of the clip.
-- **Two outputs** — the finished MP4 and the live SVG render.
-- **No account, no uploads, no analytics** — the site is a static page.
+- **16-bone human rig** shared by the whole cast
+- **9 hair styles · 9 outfit shapes · 9 worlds**
+- **12 readable human actions** — wave, point, think, shrug, clap, laugh, dance, bow,
+  walk, jump, stretch, tennis swing
+- **7-person cast** across masculine, feminine and androgynous presentations
+- **hard-cel flat vector art** — solid masses, no outlines, flat fills, oversized eyes
+- **offline fallback** — the keyword/edit grammar still works without a provider
 
-## The first drop
+Read `HANDOFF.md` for the architecture and `HUMAN-DEMO.md` for the human-demo scope.
 
-| | | |
-| :---: | :---: | :---: |
-| <img src="public/images/chef-poster.webp" width="230" alt="Pancake Catch — a chef flipping a pancake"> | <img src="public/images/garden-poster.webp" width="230" alt="Garden Bloom — a gardener watering a sprout"> | <img src="public/images/reveal-poster.webp" width="230" alt="Champion Reveal — a footballer celebrating"> |
-| **Pancake Catch** | **Garden Bloom** | **Champion Reveal** |
-| Marco · Character · 9.6s | Maya · Scene · 10.0s | Leo · Reveal · 9.0s |
-| [spec](public/specs/chef-demo.json) · [MP4](public/videos/chef.mp4) | [spec](public/specs/garden-demo.json) · [MP4](public/videos/garden.mp4) | [spec](public/specs/reveal-demo.json) · [MP4](public/videos/reveal.mp4) |
+## Routes
 
-Every clip is also available in the live viewer with a full-resolution preview, the spec JSON, and the live SVG render.
+| Route | What it does |
+|---|---|
+| `/` | Landing page — “Describe a person. Watch them move.” |
+| `/creature` | **Human compiler** — prompt or voice → genome + score → live 60fps stage, skeleton view, presets, edit, share, JSON export |
+| `/studio` | **ANI Studio** — AI-directed character scenes and imported SVGs, timeline, track inspector, project storage, PNG/SVG/WebM/JSON export |
+| `/toon` | Deterministic viewer for the original clip specs (`?spec=`, `?t=`, `?sheet=`) |
 
-## The viewer
+API routes (server builds only):
 
-![Anitoon viewer](docs/viewer.png)
+- `POST /api/direct` — character scene from a brief
+- `POST /api/studio/character` — studio character generation
+- `POST /api/animation/direct` — Motion DSL v1 direction and revision
 
-The viewer has three tabs on the same clip:
+## Architecture
 
-1. **Preview** — the finished 60fps MP4.
-2. **Spec** — the real JSON, with a copy button.
-3. **Live SVG** — the same spec compiled and rendered live in the browser.
-
-The download button gives you the MP4; the copy button gives you the exact spec. No proprietary export format and no locked player.
-
-## The library
-
-![Anitoon library](docs/library.png)
-
-The landing is a working library, not a screenshot of one:
-
-- The hero product frame autoplays the selected clip at 60fps.
-- Selecting a row switches the clip, the preview, the copy and the metadata.
-- The preview pauses when it leaves the viewport.
-- The library cards open the full viewer.
-- Everything is keyboard accessible, and reduced-motion users get the poster instead of autoplay.
-
-<p align="center">
-  <img src="docs/mobile.png" width="300" alt="Anitoon on a 390px viewport">
-</p>
-<p align="center"><em>390px: one column, same viewer, no horizontal overflow.</em></p>
-
-## How it works
-
-1. **Browse** — open the first drop and watch a clip.
-2. **Inspect** — read the spec or switch to the live SVG render.
-3. **Take it** — download the MP4, copy the spec, or use the live render.
-
-## Built for the challenge
-
-The Wispr challenge asked for a build without typing. The clips, the specs and this page were directed with **Wispr Flow**.
-
-The site tells that story once and then gets out of the way. It does **not** request a microphone, fake a product integration or claim a company logo wall. The voice was the build tool; the library is the product.
-
-**Not a SaaS:** no pricing, no login, no MCP server, no fake customers, no invented case studies. Just a small, honest motion library.
-
----
-
-## ANI Studio
-
-**ANI is an AI-directed, deterministic vector animation studio for generated characters and imported SVGs.**
-
-Natural-language prompts direct procedural character scenes or animate imported vector SVGs. A server-side Director compiles instructions into a declarative **MotionPlan** (**Motion DSL v1**). The browser evaluates this document deterministically at 60fps, providing live interactive playback, timeline inspection, keyframe editing, local project persistence, and multi-format exports.
-
-### What is Implemented
-
-Based on verified contracts and implementation files:
-
-- **Server-Side Director Abstraction** (`src/lib/ai/contracts.ts`): Provider-agnostic API contract (`POST /api/animation/direct`) handling instruction prompts, revisions, validation, and repair passes.
-- **Motion DSL v1** (`src/lib/animation/types.ts`): Declarative, non-executable motion schema specifying targets (`svg`, `character`, `object`), normalized keyframes (`at: 0..1`), and standard easing functions.
-- **Deterministic 60fps Evaluator** (`src/lib/animation/evaluate.ts`, `runtime.ts`): Pure functional evaluation of motion state at timestamp `t` without runtime drift or external scripts.
-- **Character Bones, Face, and Objects Adapter** (`src/creature/motion.ts`, `src/creature/objects.ts`): Multi-track character animations layering atop the procedural idle engine (breathing, blinks, gaits) with rig rotation/scale limits and stage object positioning.
-- **Sanitized SVG Import Boundary** (`src/lib/svg/*`): Allowlist-based XML parsing, DOCTYPE stripping, script blocking, and stable element ID mapping.
-- **Interactive Timeline & Studio UI** (`src/components/ani-studio/*`): Real-time playback transport, track inspector, source tree, Director chat and visual stage.
-- **Local Project Storage** (`src/lib/project-store/*`): Persistent client-side project management backed by browser IndexedDB (with LocalStorage fallback).
-- **Multi-Format Exports** (`src/lib/studio-export/*`, `src/lib/animation/exportSvg.ts`): Lossless native `.ani.json` project downloads, standalone SMIL animated SVGs, raster PNG snapshots, and canvas-recorded WebM video.
-
-### Run Locally
-
-```bash
-pnpm install
-pnpm dev
+```text
+prompt / voice
+      ↓
+AI Director (server-side, structured JSON)
+      ↓
+human genome + score  ·  SVG scene graph
+      ↓
+deterministic compiler / Motion DSL v1
+      ↓
+validator + bounded repair
+      ↓
+live 60fps SVG preview ↔ natural-language revision
+      ↓
+share link · JSON · animated SVG · PNG · WebM
 ```
 
-Open [http://localhost:3000/studio](http://localhost:3000/studio) (or [http://localhost:3000/creature](http://localhost:3000/creature) for the character generator).
+Key folders:
 
-#### Environment Variables
-
-Copy the example environment template:
-```bash
-cp .env.example .env.local
+```text
+src/app/                  Next.js routes and API handlers
+src/components/anitoon/   Landing page, hero, brief library, voice section
+src/components/ani-studio/ ANI Studio UI, stage, transport, timeline, chat
+src/creature/             Human/creature genome, skeleton, renderer, actions, worlds
+src/lib/animation/        Motion DSL v1, evaluator, validator, SMIL export
+src/lib/svg/              Sanitized SVG import and scene graph
+src/lib/ai/               Director contracts, provider abstraction, prompt, fallback
+src/lib/project-store/    IndexedDB project persistence
+src/lib/studio-export/    JSON / SVG / PNG / WebM export pipelines
+src/toon/                 Original SVG motion engine
+public/                   Specs, MP4s, posters and static assets
+docs/                     Architecture, environment, art style and agent contract
 ```
-
-For the deployed app, point the Director at an OpenAI-compatible API gateway:
-- `AI_BASE_URL`, `AI_API_KEY`, `AI_MODEL`, `ANIMATION_DIRECTOR_PROVIDER=gateway`.
-
-For local verification without a key, the server can run the installed Gemini 3.8
-Flash CLI:
-- `ANIMATION_DIRECTOR_PROVIDER=agy`, `AGY_BIN`, `AGY_MODEL`, `AGY_TIMEOUT_MS`.
-- The `agy` provider is disabled automatically on Vercel and is not a production dependency.
-
-Direct `EXPLABS_API_KEY` / `GEMINI_API_KEY` providers remain supported.
-See [docs/ENVIRONMENT.md](docs/ENVIRONMENT.md) for full details.
-
-### Honest Status Note
-
-Real hosted AI direction requires an API gateway or provider credentials. On a
-developer machine the local `agy` provider produces real Gemini output without
-embedding a key; it is labelled `provider: "agy"`. When no provider is
-available, or an upstream call fails, ANI operates in a **local deterministic
-fallback mode** and labels the result `source: "fallback"` or `source: "local"`.
-Fallback output must never be described or marketed as AI-generated.
-
-Local verification performed during development: an astronaut character prompt
-and a motion prompt were generated through Gemini 3.8 Flash via `agy`, validated
-by Motion DSL v1, imported into the studio, played back, and exported as project
-JSON and PNG.
-
-### Deployment Notice
-
-- **Vercel** is required for deploying ANI Studio with live server API routes (`/api/animation/direct`, `/api/studio/character`, `/api/direct`).
-- **GitHub Pages** hosts the static Anitoon clip-library deployment (`https://pranavk429.github.io/ani-toon/`) built with `output: "export"`, which cannot execute serverless API routes.
-
-For complete deployment instructions, see [DEPLOYMENT.md](DEPLOYMENT.md).
-
-### Documentation Links
-
-- [Architecture & Contracts Specification](docs/ARCHITECTURE.md)
-- [Environment Variables & Configuration](docs/ENVIRONMENT.md)
-- [Deployment Guide (Vercel & Pages)](DEPLOYMENT.md)
-- [Character Art Style Guide](docs/ART-STYLE.md)
-
----
-
-## Design
-
-The visual system is adapted from the measured language of [Mobbin](https://mobbin.com/):
-
-- white canvas, ink `#141414`, secondary `#707070`, tile `#f2f2f2`
-- **Switzer variable** (the closest free metric match to Saans) at the measured weights
-- 80/44/24/20/16/14/12 type ramp, tight display tracking, 1045px container
-- 30px cards, black pills, hairline borders, 150ms state motion
-- oversized headline with inline clip thumbnails, six-tile bento, gray quote band, rounded black footer
-
-The full token and component notes are in [docs/DESIGN.md](docs/DESIGN.md). No Mobbin copy, screenshots, logo, client marks or font files are used.
 
 ## Run locally
 
@@ -171,83 +89,76 @@ pnpm install
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Open http://localhost:3000. Use `pnpm build && pnpm start` for a production server.
+
+Checks:
 
 ```bash
-pnpm build      # production build
-pnpm start      # serve the production build
-pnpm lint
 pnpm typecheck
+pnpm vitest run
+pnpm lint
+pnpm build
 ```
 
-No environment variables are required for the static viewer.
+Current baseline (2026-10-31, `main`):
 
-## Verification
+- `pnpm typecheck` — passes
+- `pnpm vitest run` — 229 passed, 6 skipped
+- `pnpm lint` — 0 errors (warnings only)
+- `pnpm build` — passes
+- static Pages build (`GITHUB_PAGES=true`) — passes
 
-Measured in a production build with **DesignProbe** and re-checked in **ego lite** at 1440, 768 and 390.
+## Environment
 
-```text
-Structural     88.8 / 100   PASS (budget 80)
-Contrast        0 failures
-Tap targets     0 under 24px
-Focus visible   100% (32/32)
-Overflow @390   0px
-CLS             0.000
-Transfer        420KB / 600KB
-Requests        18
-```
+Copy `.env.example` to `.env.local` (gitignored) and add a provider:
 
-The gate’s remaining suggestions are component-count deltas: Mobbin is a large design library with 261 images, while Anitoon is a deliberate three-clip drop. Adding filler would break the “no fake content” rule, so the count is left honest.
+- `GEMINI_API_KEY` / `GEMINI_MODEL`
+- `EXPLABS_API_KEY`
+- `AI_BASE_URL` / `AI_API_KEY` / `AI_MODEL` for an OpenAI-compatible gateway
+- `ANIMATION_DIRECTOR_PROVIDER=gateway` (or `agy` for local Gemini CLI verification)
 
-Run it yourself:
+Never commit keys. See `docs/ENVIRONMENT.md` for the full matrix.
 
-```bash
-pnpm dev
-designprobe-plugin gate --project . --url http://localhost:3000
-```
-
-## Project structure
-
-```text
-src/app/                  Next.js routes, layout, global tokens
-src/components/anitoon/   Landing, library, viewer, footer
-src/components/ani-studio/ ANI Studio UI, stage, transport, timeline and Director chat
-src/data/clips.ts         The three clips and their metadata
-src/creature/             Procedural character engine, bone rigging, and motion adapter
-src/lib/animation/        Motion DSL v1 schema, validation, evaluator, SMIL export
-src/lib/svg/              SVG sanitizer, parser, geometry, and scene graph
-src/lib/project-store/    IndexedDB project persistence
-src/lib/studio-export/    Export pipelines (JSON, SVG, PNG, WebM)
-src/lib/ai/               Director contracts and provider abstraction
-src/toon/                 SVG motion engine + live renderer
-public/videos/            Full 1080p MP4s + 600px 60fps previews
-public/specs/             The source specs for every clip
-public/images/            Posters and hero thumbnails
-docs/                     Architecture, environment, art style, and design notes
-```
+Without a provider, `/creature` runs the local deterministic grammar and labels the
+result as fallback. `/studio` needs the server API routes for live generation.
 
 ## Deploy
 
-**GitHub Pages** — push to `main`. The workflow in `.github/workflows/pages.yml` builds with `GITHUB_PAGES=true`, writes `out/`, and deploys to:
+**GitHub Pages** — push to `main`. `.github/workflows/pages.yml` removes `src/app/api`,
+builds with `GITHUB_PAGES=true` and `basePath: /ani-toon`, then deploys `out/`.
 
-```text
-https://pranavk429.github.io/ani-toon/
-```
+> Pages is static: live AI generation is unavailable there. `/creature` falls back to the
+> local grammar; `/studio` needs a server host.
 
-**Vercel / any Next host** — see [DEPLOYMENT.md](DEPLOYMENT.md). Import the repo, run `pnpm build`, and serve with API routes enabled.
+**Vercel / any Next host** — import the repo, add the environment variables, and run
+`pnpm build`. `vercel.json` is included. This is the deployment that enables the full AI
+studio.
+
+## Status
+
+`main` is the source of truth. It contains the human compiler and ANI Studio. The old
+three-clip motion library is preserved in history at commit `10bd736`.
+
+Known limitations:
+
+- The static GitHub Pages deployment cannot run `/api`, so live AI is only available on a
+  server host such as Vercel.
+- `/studio` and `/creature` share the Motion DSL runtime but have separate UI flows.
+- The original `qa/` and `wip-snapshots/` folders are evidence from earlier iterations,
+  not runtime code.
 
 ## Stack
 
-- Next.js 16 (App Router, dynamic API routes & static export support) + React 19 + TypeScript
-- Tailwind CSS v4 with the measured design tokens
+- Next.js 16 (App Router, API routes, static export) · React 19 · TypeScript
+- Tailwind CSS v4 with measured design tokens
 - `next/font/local` for Switzer
-- Hand-built SVG motion engine & Motion DSL v1; deterministic runtime
-- Real 60fps MP4s, real JSON specs, IndexedDB client project storage
+- Hand-built SVG engine, Motion DSL v1, deterministic evaluator
+- IndexedDB project storage; no database, no accounts, no analytics
 
 ## Credits
 
 - **Challenge:** [Wispr Flow](https://wisprflow.ai/) × [WeMakeDevs](https://www.wemakedevs.org/wispr)
-- **Design reference:** [Mobbin](https://mobbin.com/) — aesthetic study only; no assets, copy or fonts reused
+- **Design reference:** [Mobbin](https://mobbin.com/) — aesthetic study only
 - **Typeface:** Switzer via Fontshare (ITF Free Font License)
 - **Icons:** Lucide
 - **Motion method:** inspired by [rossark0/rossark-motion-skill](https://github.com/rossark0/rossark-motion-skill) (MIT)

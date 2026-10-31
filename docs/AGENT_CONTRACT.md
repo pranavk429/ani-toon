@@ -1,7 +1,8 @@
 # ANI Studio — Agent Integration Contract
 
 Read this before touching code. Repo: `/Users/pranav1296/Ani-toon/app`.
-Branch: `feat/ani-ai-studio`. Do not commit, push, reset, or delete user files.
+Branch: `main` (the human compiler + ANI Studio shipped here on 2026-10-31).
+Do not commit, push, reset, or delete user files without owner approval.
 
 ## Product
 
@@ -39,11 +40,14 @@ Two scene sources share one runtime:
 
 ```bash
 pnpm typecheck                 # passes
-pnpm vitest run tests/animation tests/svg tests/ui  # 148 passing
+pnpm vitest run                # 229 passed, 6 skipped
+pnpm lint                      # 0 errors (warnings only)
+pnpm build                     # passes
 ```
 
-`pnpm lint` currently has 5 pre-existing errors in user work (creature page,
-BriefLibrary, ScenePlayer). Fix only if your task owns QA/lint.
+The static GitHub Pages build also passes with `GITHUB_PAGES=true` after the
+Pages workflow removes `src/app/api`. Pages cannot run live AI; `/creature`
+falls back to the local grammar and `/studio` needs a server host.
 
 ## Commands
 

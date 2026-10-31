@@ -1,5 +1,9 @@
 # HANDOFF — Anitoon Creature Compiler
 
+> **MAIN IS CURRENT — 2026-10-31.** `main` now contains the human compiler landing
+> (“Describe a person. Watch them move.”), `/creature`, and the ANI Studio. The old
+> three-clip library is history at `10bd736`. Start with `README.md`.
+
 > **Paste this file into the next agent's first message, or tell it:**
 > “Read `app/HANDOFF.md` before touching anything. P0 is done. Continue with P1. Do not rebuild the scene graph, renderer, skeleton grammar, director, or `/creature`.”
 

@@ -30,5 +30,5 @@
     "vitest": "^5.0.5"
   },
   "packageManager": "pnpm@11.25.0",
-  "description": "Anitoon — a small library of 60fps, code-rendered motion clips."
+  "description": "Anitoon — describe a person, watch them move. A deterministic human motion compiler and AI-directed vector animation studio."
 }
