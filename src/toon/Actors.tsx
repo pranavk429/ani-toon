@@ -226,6 +226,96 @@ export function SoccerBall({ prop }: { prop: PropState }) {
   );
 }
 
+export function TennisBall({
+  prop,
+  color = '#D4E157',
+}: {
+  prop: PropState;
+  color?: string;
+}) {
+  const r = BALL_R * 0.72;
+  const sx = 1 + 0.3 * prop.squash;
+  const sy = 1 - 0.22 * prop.squash;
+  const ground = FEET.y - 12;
+  const distToGround = Math.max(0, ground - prop.y);
+  const low = Math.max(0, 1 - distToGround / 550);
+  const bw = r * 2.4 * (0.4 + 0.6 * low);
+  const bh = bw * 0.28;
+
+  return (
+    <g>
+      {/* Ground court shadow */}
+      {low > 0 && (
+        <ellipse
+          cx={prop.x}
+          cy={FEET.y - 4 * SCALE}
+          rx={bw / 2}
+          ry={bh / 2}
+          fill="#1E293B"
+          opacity={0.3 * low}
+        />
+      )}
+
+      {/* Explosive impact shockwave burst on contact */}
+      {prop.squash > 0.15 && (
+        <g transform={`translate(${prop.x} ${prop.y})`}>
+          <circle cx={0} cy={0} r={r * 1.6} fill="#FFFFFF" opacity={0.45 * prop.squash} />
+          <circle cx={0} cy={0} r={r * 2.2} fill="none" stroke="#FFF275" strokeWidth={3} opacity={prop.squash} />
+          {[0, 45, 90, 135, 180, 225, 270, 315].map((ang) => {
+            const rad = (ang * Math.PI) / 180;
+            return (
+              <line
+                key={ang}
+                x1={Math.cos(rad) * (r + 4)}
+                y1={Math.sin(rad) * (r + 4)}
+                x2={Math.cos(rad) * (r + 20 + prop.squash * 16)}
+                y2={Math.sin(rad) * (r + 20 + prop.squash * 16)}
+                stroke="#FFFFFF"
+                strokeWidth={2.8}
+                strokeLinecap="round"
+              />
+            );
+          })}
+        </g>
+      )}
+
+      {/* The Tennis Ball */}
+      <g transform={`translate(${prop.x} ${prop.y}) scale(${sx} ${sy})`}>
+        <defs>
+          <clipPath id="tennisDisc">
+            <circle cx={0} cy={0} r={r} />
+          </clipPath>
+        </defs>
+        {/* Felt Base */}
+        <circle cx={0} cy={0} r={r} fill={color} />
+        <g clipPath="url(#tennisDisc)">
+          {/* 3D Top-left light sheen */}
+          <ellipse cx={-r * 0.28} cy={-r * 0.28} rx={r * 0.8} ry={r * 0.7} fill="#F7FEE7" opacity={0.5} />
+          {/* Bottom shadow */}
+          <ellipse cx={r * 0.3} cy={r * 0.35} rx={r * 0.75} ry={r * 0.6} fill="#84CC16" opacity={0.45} />
+          {/* Dual curved tennis seams */}
+          <g transform={`rotate(${prop.rot})`}>
+            <path
+              d={`M ${-r * 0.88} 0 C ${-r * 0.2} ${-r * 0.68}, ${r * 0.2} ${-r * 0.68}, ${r * 0.88} 0`}
+              fill="none"
+              stroke="#FFFFFF"
+              strokeWidth={3}
+              strokeLinecap="round"
+            />
+            <path
+              d={`M ${-r * 0.88} 0 C ${-r * 0.2} ${r * 0.68}, ${r * 0.2} ${r * 0.68}, ${r * 0.88} 0`}
+              fill="none"
+              stroke="#FFFFFF"
+              strokeWidth={3}
+              strokeLinecap="round"
+            />
+          </g>
+        </g>
+      </g>
+    </g>
+  );
+}
+
 // ---------------------------------------------------------------------------
 // 2. ChefScene: Pan, 3D Flipping Pancake, and Curling Steam Wisps + Landing Puffs
 

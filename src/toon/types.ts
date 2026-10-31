@@ -3,10 +3,23 @@
 // (flow through poses, idle layers, follow-through, volume-preserving squash).
 
 export type HairStyle = 'quiff' | 'short' | 'bun' | 'long' | 'bald' | 'curly';
-export type Accessory = 'none' | 'chef-hat' | 'sun-hat' | 'beanie' | 'cap' | 'glasses' | 'headband' | 'mustache';
-export type Pattern = 'none' | 'stripes' | 'badge' | 'apron' | 'overalls' | 'chef';
+export type Accessory =
+  | 'none'
+  | 'chef-hat'
+  | 'sun-hat'
+  | 'beanie'
+  | 'cap'
+  | 'glasses'
+  | 'headband'
+  | 'mustache'
+  | 'cat-ears'
+  | 'bear-ears'
+  | 'bunny-ears'
+  | 'antenna'
+  | 'horns';
+export type Pattern = 'none' | 'stripes' | 'badge' | 'apron' | 'overalls' | 'chef' | 'tennis';
 export type WorldPreset = 'sky' | 'garden' | 'kitchen' | 'night' | 'studio';
-export type PropKind = 'none' | 'ball' | 'pancake' | 'watering-can' | 'gift' | 'star' | 'jar' | 'cup' | 'heart';
+export type PropKind = 'none' | 'ball' | 'pancake' | 'watering-can' | 'gift' | 'star' | 'jar' | 'cup' | 'heart' | 'racket';
 export type Verb =
   | 'mystery'
   | 'drop-in'
@@ -27,7 +40,9 @@ export type Verb =
   | 'peer'
   | 'gasp'
   | 'star-catch'
-  | 'hug';
+  | 'hug'
+  | 'tennis-shot'
+  | 'swing';
 
 export type LookTarget = 'viewer' | 'left' | 'right' | 'up' | 'down' | 'prop';
 

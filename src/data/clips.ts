@@ -25,6 +25,27 @@ export type Clip = {
 
 export const CLIPS: Clip[] = [
   {
+    id: 'tennis',
+    title: 'Championship Smash',
+    character: 'Maya',
+    category: 'Character',
+    scene: 'Sky Court',
+    description:
+      'A tennis ace locks onto the incoming ball, coils into an athletic backswing, and fires an explosive forehand smash with a crisp follow-through.',
+    poster: asset('/images/tennis-poster.webp'),
+    chip: asset('/images/clip-tennis.jpg'),
+    video: asset('/videos/tennis.mp4'),
+    preview: asset('/videos/tennis-preview.mp4'),
+    specFile: asset('/specs/tennis-demo.json'),
+    liveSpec: 'tennis-demo',
+    fps: 60,
+    duration: '9.2s',
+    durationMs: 9200,
+    resolution: '1080 × 1080',
+    tags: ['Sport', 'Tennis', 'Physics'],
+    accent: '#10B981',
+  },
+  {
     id: 'chef',
     title: 'Pancake Catch',
     character: 'Marco',

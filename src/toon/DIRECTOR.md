@@ -21,7 +21,7 @@ You do NOT write code, SVG, or animation curves. You choose from a fixed vocabul
     "topShade": "#EA2B2B",
     "bottom": "#1453A3",
     "shoe": "#33333B",
-    "pattern": "none|stripes|badge|apron|overalls|chef"
+    "pattern": "none|stripes|badge|apron|overalls|chef|tennis"
   },
   "world": { "preset": "sky|garden|kitchen|night|studio", "accent": "#4B63FF" },
   "prop": { "kind": "none|ball|pancake|watering-can|gift|star|cup|heart", "color": "#F8CB69" },
@@ -39,6 +39,7 @@ All colours are `#RRGGBB`. `duration` is one loop in ms, 6000–12000.
 | `drop-in` | character floats in from above, hovers, falls, lands with squash | 900–1400 | character is hidden before this. Great opener for a reveal |
 | `wave` | arm up beside the head, friendly wave | 1500–2400 | friendly hello or goodbye |
 | `kick` | kicks the soccer ball. **`at` is the moment of contact.** | n/a | needs `prop.kind = "ball"`; ball rolls in from the right 1250 ms before `at` and flies off spinning with ground shadow |
+| `tennis-shot` | forehand tennis smash with racket. **`at` is contact.** | 1000–1400 | needs `prop.kind = "ball"`; incoming ball flies in from right, character coils into backswing and hits an explosive forehand line drive with follow-through |
 | `toss` | flips the pancake or prop out of a held pan and catches it | 1600–2200 | needs `prop.kind = "pancake"` (or `gift`/`cup`/`star`). Right hand grips pan handle via 2-bone IK |
 | `hat-catch` | signature chef toss: high flip lands on chef's hat, squashes & wobbles the hat, slides off, pan catches it, smug brow raise & shrug! | 3000–3600 | needs `pancake` and `chef-hat` in `kitchen` |
 | `pour` | lifts the watering can and pours parabolic water droplets that splash on the soil and darken it | 1400–2000 | needs `prop.kind = "watering-can"` |

@@ -29,6 +29,18 @@ function Inner() {
     const ts: number[] = [];
     for (let t = a; t < b; t += step) ts.push(t);
     const cols = Number(q.get('cols') ?? 6);
+    const clean = q.get('clean') === '1';
+    if (clean) {
+      return (
+        <div id="ready" style={{ display: 'grid', gridTemplateColumns: `repeat(${cols}, 270px)`, width: cols * 270, margin: 0, padding: 0 }}>
+          {ts.map((t) => (
+            <div key={t} style={{ width: 270, height: 480, overflow: 'hidden' }}>
+              <ToonFrame compiled={compiled} t={t} />
+            </div>
+          ))}
+        </div>
+      );
+    }
     return (
       <div id="ready" style={{ background: '#222', padding: 8, display: 'grid', gridTemplateColumns: `repeat(${cols}, 1fr)`, gap: 8, width: cols * 260 }}>
         {ts.map((t) => (

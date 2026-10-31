@@ -16,7 +16,7 @@ export function BrandLink({ href = '/', tone = 'ink' }: { href?: string; tone?: 
   return (
     <Link href={href} className="brand" aria-label="Anitoon home">
       <AnitoonMark size={32} tone={tone} />
-      <span className="brand-name">anitoon</span>
+      <span className="brand-name">Anitoon</span>
     </Link>
   );
 }

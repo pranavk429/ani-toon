@@ -1,6 +1,4 @@
 import Link from 'next/link';
-import { asset } from '../../lib/asset';
-import { AnitoonMark } from './Brand';
 
 export function SiteFooter() {
   return (
@@ -9,23 +7,25 @@ export function SiteFooter() {
         <div className="footer-top">
           <div className="footer-blurb">
             <strong>Anitoon</strong>
-            A small library of 60fps, code-rendered motion clips. Built for the Wispr No Hands Challenge, October 2026.
+            A motion compiler for brand characters. One sentence becomes a scene spec, and a
+            deterministic engine performs every frame. Built for the Wispr No Hands Challenge, October
+            2026.
           </div>
 
           <div className="footer-col">
             <h4>Product</h4>
             <ul>
               <li>
-                <Link href="/#library">Library</Link>
+                <Link href="/creature">Human studio</Link>
+              </li>
+              <li>
+                <Link href="/#briefs">Starter briefs</Link>
               </li>
               <li>
                 <Link href="/#how">How it works</Link>
               </li>
               <li>
                 <Link href="/#honest">Under the hood</Link>
-              </li>
-              <li>
-                <Link href="/#voice">Wispr</Link>
               </li>
             </ul>
           </div>
@@ -39,19 +39,13 @@ export function SiteFooter() {
                 </a>
               </li>
               <li>
-                <a href={asset('/specs/chef-demo.json')} target="_blank" rel="noreferrer">
-                  Chef spec
-                </a>
+                <Link href="/#honest">Scene spec format</Link>
               </li>
               <li>
-                <a href={asset('/specs/garden-demo.json')} target="_blank" rel="noreferrer">
-                  Garden spec
-                </a>
+                <Link href="/#voice">Wispr Flow</Link>
               </li>
               <li>
-                <a href={asset('/specs/reveal-demo.json')} target="_blank" rel="noreferrer">
-                  Reveal spec
-                </a>
+                <Link href="/creature">Live SVG stage</Link>
               </li>
             </ul>
           </div>
@@ -78,20 +72,27 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <div className="footer-wordmark">
-          <span className="footer-mark">
-            anitoon<span className="dot" aria-hidden="true" />
-          </span>
-          <span className="footer-ball" aria-hidden="true">
-            <AnitoonMark size={54} tone="paper" />
-          </span>
-        </div>
-
         <div className="footer-bottom">
-          <span>© 2026 Anitoon · a hackathon project, not a SaaS product</span>
-          <span>Built with voice, in public.</span>
-          <a href="#top">Back to top ↑</a>
+          <div className="footer-copy">© Anitoon 2026.</div>
+
+          <div className="footer-meta-links">
+            <a href="https://github.com/pranavk429/ani-toon" target="_blank" rel="noreferrer">
+              GitHub
+            </a>
+            <Link href="/#honest">Specs</Link>
+            <a href="https://wisprflow.ai/" target="_blank" rel="noreferrer">
+              Wispr Flow
+            </a>
+            <span className="footer-divider" aria-hidden="true" />
+            <a href="#top" className="footer-back-top">
+              Back to top ↑
+            </a>
+          </div>
         </div>
+      </div>
+
+      <div className="footer-wordmark-bottom" aria-hidden="true">
+        <span className="footer-watermark-text">Anitoon</span>
       </div>
     </footer>
   );

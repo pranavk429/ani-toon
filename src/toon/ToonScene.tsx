@@ -16,6 +16,7 @@ import {
   SoccerBall,
   Steam,
   Telescope,
+  TennisBall,
   WaterDrops,
 } from './Actors';
 import { Kid, KidForearms } from './Kid';
@@ -111,6 +112,10 @@ export function ToonFrame({ compiled, t }: { compiled: Compiled; t: number }) {
     compiled.props.some((p) => p.type === 'toss' || p.type === 'hat-catch');
   const holdingCan =
     spec.prop.kind === 'watering-can' || compiled.pours.length > 0;
+  const isTennis =
+    spec.character.pattern === 'tennis' ||
+    spec.beats.some((b) => b.verb === 'tennis-shot' || b.verb === 'swing') ||
+    spec.prop.kind === 'racket';
   const isNight = spec.world.preset === 'night';
   const hasStarCatch = compiled.starCatches.length > 0;
 
@@ -151,6 +156,8 @@ export function ToonFrame({ compiled, t }: { compiled: Compiled; t: number }) {
           hideLegs={worldHidesLegs(spec)}
           holdingCan={holdingCan}
           canColor={spec.prop.color}
+          holdingRacket={isTennis}
+          racketColor={spec.world.accent ?? '#2563EB'}
         />
       )}
 
@@ -164,8 +171,14 @@ export function ToonFrame({ compiled, t }: { compiled: Compiled; t: number }) {
         </>
       )}
 
-      {/* Soccer Ball */}
-      {spec.prop.kind === 'ball' && prop.visible && <SoccerBall prop={prop} />}
+      {/* Ball (Tennis or Soccer) */}
+      {spec.prop.kind === 'ball' && prop.visible && (
+        isTennis ? (
+          <TennisBall prop={prop} color={spec.prop.color || '#D4E157'} />
+        ) : (
+          <SoccerBall prop={prop} />
+        )
+      )}
 
       {/* Stargazer: Falling Star Arc, Glass Lantern Jar & Trapped Pulsing Star */}
       {hasStarCatch && (

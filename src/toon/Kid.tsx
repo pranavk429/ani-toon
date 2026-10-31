@@ -123,6 +123,88 @@ export function WateringCanInBody({
   );
 }
 
+export function TennisRacketInBody({
+  gx,
+  gy,
+  ux,
+  uy,
+  tilt,
+  racketColor = '#10B981',
+  flat,
+}: {
+  gx: number;
+  gy: number;
+  ux: number;
+  uy: number;
+  tilt: number;
+  racketColor?: string;
+  flat?: string;
+}) {
+  const forearmDeg = (Math.atan2(uy, ux) * 180) / Math.PI;
+  // Tilt allows dynamic wrist angle during swing
+  const rot = forearmDeg - 15 + tilt * 0.4;
+  const frameC = flat ?? racketColor;
+  const gripC = flat ?? '#F8FAFC';
+  const rimC = flat ?? '#FFFFFF';
+  const stringC = flat ?? '#FFFFFF';
+  const throatC = flat ?? mix(racketColor, '#000000', 0.2);
+
+  return (
+    <g transform={`translate(${gx} ${gy}) rotate(${rot})`}>
+      {/* Handle / Grip Tape (extends back from hand to butt cap) */}
+      <line x1={-12} y1={0} x2={10} y2={0} stroke={gripC} strokeWidth={6.5} strokeLinecap="round" />
+      {/* Butt Cap */}
+      <rect x={-14} y={-3.5} width={3.5} height={7} rx={1.5} fill={throatC} />
+      {/* Grip wrap lines */}
+      {[-8, -3, 2, 7].map((x) => (
+        <line key={x} x1={x} y1={-3} x2={x + 2} y2={3} stroke="#94A3B8" strokeWidth={1.2} />
+      ))}
+      {/* Wishbone / Throat */}
+      <path d="M10 -3.5 L22 -7 L22 7 L10 3.5 Z" fill={throatC} />
+      <path d="M13 -2 L20 -4.5 L20 4.5 L13 2 Z" fill="#000000" opacity={0.3} />
+      {/* Racket Head Hoop (Outer Frame) */}
+      <ellipse cx={44} cy={0} rx={22} ry={16.5} fill="none" stroke={frameC} strokeWidth={4.5} />
+      {/* Inner Rim Highlight */}
+      <ellipse cx={44} cy={0} rx={20} ry={14.5} fill="none" stroke={rimC} strokeWidth={1} opacity={0.65} />
+      {/* String Mesh Bed */}
+      <g opacity={0.85}>
+        {/* Cross strings */}
+        {[-14, -7, 0, 7, 14].map((dy) => {
+          const dx = Math.sqrt(Math.max(0, 1 - (dy / 14.5) ** 2)) * 19;
+          return (
+            <line
+              key={`c${dy}`}
+              x1={44 - dx}
+              y1={dy}
+              x2={44 + dx}
+              y2={dy}
+              stroke={stringC}
+              strokeWidth={0.85}
+            />
+          );
+        })}
+        {/* Main strings */}
+        {[-15, -10, -5, 0, 5, 10, 15].map((dx) => {
+          const dy = Math.sqrt(Math.max(0, 1 - (dx / 19) ** 2)) * 14.5;
+          return (
+            <line
+              key={`m${dx}`}
+              x1={44 + dx}
+              y1={-dy}
+              x2={44 + dx}
+              y2={dy}
+              stroke={stringC}
+              strokeWidth={0.85}
+            />
+          );
+        })}
+        {/* Vibration Dampener */}
+        <circle cx={25} cy={0} r={2.2} fill="#EF4444" />
+      </g>
+    </g>
+  );
+}
+
 /**
  * Forearms and hands drawn in front of the kitchen counter and pan handle
  * (ChefScene.swift L600-617) so the chef's right hand closes over the handle.
@@ -198,6 +280,8 @@ export function Kid({
   hideLegs = false,
   holdingCan = false,
   canColor = '#3BB8C7',
+  holdingRacket = false,
+  racketColor = '#2563EB',
 }: {
   ch: CharacterSpec;
   pose: Pose;
@@ -208,6 +292,8 @@ export function Kid({
   hideLegs?: boolean;
   holdingCan?: boolean;
   canColor?: string;
+  holdingRacket?: boolean;
+  racketColor?: string;
 }) {
   const uid = useId().replace(/[^a-zA-Z0-9_-]/g, '');
   const skin = flat ?? ch.skin;
@@ -537,6 +623,86 @@ export function Kid({
             <path d={`M${-0.5 + dx} ${-10 + dy}Q${dx} ${-14 + dy} ${0.5 + dx} ${-10 + dy}`} />
           </g>
         );
+      case 'cat-ears': {
+        const inner = flat ?? mix(c, '#F9A8D4', 0.55);
+        return (
+          <g transform={`translate(${3 * yaw} 0)`}>
+            <path
+              d={roundedTriangle({ x: -55, y: -58 }, { x: -15, y: -58 }, { x: -36, y: -106 }, 10)}
+              fill={c}
+            />
+            <path
+              d={roundedTriangle({ x: -47, y: -62 }, { x: -23, y: -62 }, { x: -36, y: -94 }, 7)}
+              fill={inner}
+            />
+            <path
+              d={roundedTriangle({ x: 15, y: -58 }, { x: 55, y: -58 }, { x: 36, y: -106 }, 10)}
+              fill={c}
+            />
+            <path
+              d={roundedTriangle({ x: 23, y: -62 }, { x: 47, y: -62 }, { x: 36, y: -94 }, 7)}
+              fill={inner}
+            />
+          </g>
+        );
+      }
+      case 'bear-ears': {
+        const inner = flat ?? mix(c, '#FBCFE8', 0.45);
+        return (
+          <g transform={`translate(${3 * yaw} 0)`}>
+            {[-1, 1].map((side) => (
+              <g key={side}>
+                <circle cx={side * 40} cy={-76} r={21} fill={c} />
+                <circle cx={side * 40} cy={-74} r={11} fill={inner} />
+              </g>
+            ))}
+          </g>
+        );
+      }
+      case 'bunny-ears': {
+        const inner = flat ?? mix(c, '#FBCFE8', 0.45);
+        return (
+          <g transform={`translate(${3 * yaw} 0)`}>
+            {[-1, 1].map((side) => (
+              <g key={side} transform={`rotate(${side * 8} ${side * 32} -70)`}>
+                <path d={pill(side * 32, -98, 24, 76)} fill={c} />
+                <path d={pill(side * 32, -98, 11, 54)} fill={inner} />
+              </g>
+            ))}
+          </g>
+        );
+      }
+      case 'antenna':
+        return (
+          <g transform={`translate(${3 * yaw} 0)`}>
+            <line x1={0} y1={-64} x2={0} y2={-104} stroke={c2} strokeWidth={4} strokeLinecap="round" />
+            <circle cx={0} cy={-110} r={8} fill={c} />
+            <circle cx={-2} cy={-112} r={2.6} fill="#FFFFFF" opacity={0.75} />
+          </g>
+        );
+      case 'horns': {
+        const inner = flat ?? mix(c, '#FCA5A5', 0.4);
+        return (
+          <g transform={`translate(${3 * yaw} 0)`}>
+            <path
+              d={roundedTriangle({ x: -48, y: -58 }, { x: -22, y: -58 }, { x: -42, y: -100 }, 8)}
+              fill={c}
+            />
+            <path
+              d={roundedTriangle({ x: 22, y: -58 }, { x: 48, y: -58 }, { x: 42, y: -100 }, 8)}
+              fill={c}
+            />
+            <path
+              d={roundedTriangle({ x: -41, y: -62 }, { x: -29, y: -62 }, { x: -39, y: -86 }, 5)}
+              fill={inner}
+            />
+            <path
+              d={roundedTriangle({ x: 29, y: -62 }, { x: 41, y: -62 }, { x: 39, y: -86 }, 5)}
+              fill={inner}
+            />
+          </g>
+        );
+      }
       default:
         return null;
     }
@@ -662,6 +828,45 @@ export function Kid({
         </g>
       );
     }
+    if (ch.pattern === 'tennis') {
+      const bx = sh + 4 * yaw;
+      const collarC = '#FFFFFF';
+      const trimC = mix(bottomC, '#000000', 0.25);
+      return (
+        <g clipPath={clip}>
+          {/* Athletic V-neck / polo collar */}
+          <path
+            d={`M${bx - 18} ${BUILD.torsoTop} L${bx} ${BUILD.torsoTop + 24} L${bx + 18} ${BUILD.torsoTop} Z`}
+            fill={collarC}
+          />
+          <path
+            d={`M${bx - 13} ${BUILD.torsoTop} L${bx} ${BUILD.torsoTop + 17} L${bx + 13} ${BUILD.torsoTop} Z`}
+            fill={topC}
+          />
+          {/* Left chest tournament shield / crossed rackets badge */}
+          <circle cx={bx - 16} cy={74} r={6.5} fill={collarC} />
+          <circle cx={bx - 16} cy={74} r={4.8} fill={trimC} />
+          <line x1={bx - 18} y1={74} x2={bx - 14} y2={74} stroke="#FFFFFF" strokeWidth={1.2} />
+          {/* Contrast athletic side piping */}
+          <line
+            x1={sh - 34}
+            y1={BUILD.torsoTop + 14}
+            x2={sh - 30}
+            y2={BUILD.torsoBottom}
+            stroke={trimC}
+            strokeWidth={3}
+          />
+          <line
+            x1={sh + 34}
+            y1={BUILD.torsoTop + 14}
+            x2={sh + 30}
+            y2={BUILD.torsoBottom}
+            stroke={trimC}
+            strokeWidth={3}
+          />
+        </g>
+      );
+    }
     return (
       <g clipPath={clip}>
         <path d={pill(sh + 4 * yaw, BUILD.torsoTop + 3, 30, 10)} fill={shade} />
@@ -780,16 +985,43 @@ export function Kid({
             );
           })}
 
-        {/* Shorts (RevealScene.swift L457) */}
+        {/* Shorts or Pleated Tennis Skirt */}
         {!hideLegs && (
-          <rect
-            x={sh - 40}
-            y={104}
-            width={80}
-            height={34}
-            rx={12}
-            fill={bottomC}
-          />
+          ch.pattern === 'tennis' ? (
+            <g>
+              <path
+                d={`M${sh - 38} 104 L${sh + 38} 104 L${sh + 48} 144 L${sh - 48} 144 Z`}
+                fill={bottomC}
+              />
+              {[-30, -18, -6, 6, 18, 30].map((px) => (
+                <line
+                  key={px}
+                  x1={sh + px * 0.8}
+                  y1={105}
+                  x2={sh + px * 1.18}
+                  y2={143}
+                  stroke={mix(bottomC, '#000000', 0.14)}
+                  strokeWidth={2}
+                  strokeLinecap="round"
+                />
+              ))}
+              <path
+                d={`M${sh - 47} 140 Q${sh} 143 ${sh + 47} 140`}
+                stroke={mix(bottomC, '#000000', 0.18)}
+                strokeWidth={2}
+                fill="none"
+              />
+            </g>
+          ) : (
+            <rect
+              x={sh - 40}
+              y={104}
+              width={80}
+              height={34}
+              rx={12}
+              fill={bottomC}
+            />
+          )
         )}
 
         {/* Arms behind the torso (RevealScene.swift L459-472 & ChefScene.swift L469-472) */}
@@ -826,6 +1058,24 @@ export function Kid({
                 strokeLinejoin="round"
               />
               <circle cx={g.hx} cy={g.hy} r={ARM.hand} fill={skin} />
+              {ch.pattern === 'tennis' && (
+                <g
+                  transform={`translate(${g.hx - g.ux * 12} ${g.hy - g.uy * 12}) rotate(${
+                    (Math.atan2(g.uy, g.ux) * 180) / Math.PI
+                  })`}
+                >
+                  <rect
+                    x={-4}
+                    y={-ARM.w * 0.52}
+                    width={8}
+                    height={ARM.w * 1.04}
+                    rx={3}
+                    fill="#FFFFFF"
+                    stroke={mix(bottomC, '#000000', 0.18)}
+                    strokeWidth={1}
+                  />
+                </g>
+              )}
               <line
                 x1={g.sx}
                 y1={g.sy}
@@ -879,9 +1129,44 @@ export function Kid({
                   strokeLinecap="round"
                 />
                 <circle cx={g.hx} cy={g.hy} r={ARM.hand} fill={skin} />
+                {ch.pattern === 'tennis' && (
+                  <g
+                    transform={`translate(${g.hx - g.ux * 12} ${g.hy - g.uy * 12}) rotate(${
+                      (Math.atan2(g.uy, g.ux) * 180) / Math.PI
+                    })`}
+                  >
+                    <rect
+                      x={-4}
+                      y={-ARM.w * 0.52}
+                      width={8}
+                      height={ARM.w * 1.04}
+                      rx={3}
+                      fill="#FFFFFF"
+                      stroke={mix(bottomC, '#000000', 0.18)}
+                      strokeWidth={1}
+                    />
+                  </g>
+                )}
               </g>
             );
           })}
+
+        {/* If holding a tennis racket, draw racket in hand with tight grip */}
+        {holdingRacket && (
+          <g>
+            <TennisRacketInBody
+              gx={R.hx}
+              gy={R.hy}
+              ux={R.ux}
+              uy={R.uy}
+              tilt={pose.tilt}
+              racketColor={racketColor}
+              flat={flat}
+            />
+            <circle cx={R.hx} cy={R.hy} r={ARM.hand} fill={skin} />
+            <circle cx={R.hx + R.ux * 4} cy={R.hy + R.uy * 4} r={ARM.hand * 0.45} fill={skin} />
+          </g>
+        )}
 
         {/* Head, tilting where it meets the collar at y=56 (RevealScene.swift L493-507) */}
         <g

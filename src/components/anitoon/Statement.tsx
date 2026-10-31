@@ -3,12 +3,14 @@ export function Statement() {
     <section className="statement" aria-labelledby="statement-title">
       <div className="shell">
         <h2 id="statement-title" className="h2" data-reveal>
-          Stock footage gives you pixels.
+          Direction is cheap.
           <br />
-          Anitoon gives you motion.
+          Performance is compiled.
         </h2>
         <p data-reveal data-delay="1">
-          Every clip is a 60fps render, shipped with the spec that made it. No stock footage.
+          The director writes a human genome and a score: presentation, hair, face, body, outfit, a
+          palette, and timed beats. The compiler builds the skeleton, owns the physics, and draws
+          every frame. That is why the first brief and the thousandth brief both land at 60fps.
         </p>
       </div>
     </section>

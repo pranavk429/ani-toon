@@ -1,5 +1,4 @@
-import { Download, FileJson, MonitorPlay, Play } from 'lucide-react';
-import { CLIPS } from '../../data/clips';
+import { Download, FileJson, Mic, MonitorPlay } from 'lucide-react';
 
 export function HowItWorks() {
   return (
@@ -7,46 +6,59 @@ export function HowItWorks() {
       <div className="shell">
         <div className="steps-head" data-reveal>
           <h2 id="how-title" className="h2">
-            Play. Inspect.
+            Brief. Direct.
             <br />
-            Take it.
+            Perform.
           </h2>
-          <p>Three moves, no guesswork. Every clip shows its work.</p>
+          <p>Three moves, no render farm. Every direction shows its work.</p>
         </div>
 
         <div className="steps-grid">
           <article className="step" data-reveal>
             <div className="step-num">
-              <span>01 / Browse</span>
-              <Play size={14} strokeWidth={1.8} />
+              <span>01 / Brief</span>
+              <Mic size={14} strokeWidth={1.8} />
             </div>
-            <h3>Open the first drop.</h3>
-            <p>Every clip is a real 60fps render, not a mockup. Pick one and watch it play.</p>
+            <h3>Say it plainly.</h3>
+            <p>
+              Type it or dictate it with Wispr Flow. The director infers a human genome, a mood, a
+              palette, and the actions that matter.
+            </p>
             <div className="step-visual" aria-hidden="true">
-              <div className="step-clips">
-                {CLIPS.map((clip) => (
-                  <span key={clip.id} className="step-clip">
-                    <img src={clip.chip} alt="" width={240} height={240} loading="lazy" />
-                  </span>
-                ))}
+              <div className="step-prompt">
+                <span className="step-prompt-quote">
+                  “A warm, proud chef with a thick mustache…”
+                </span>
+                <span className="step-tokens">
+                  <i>body · biped</i>
+                  <i>look · short + mustache</i>
+                  <i>outfit · apron</i>
+                  <i>beats · wave, stir, laugh</i>
+                </span>
               </div>
             </div>
           </article>
 
           <article className="step" data-reveal data-delay="1">
             <div className="step-num">
-              <span>02 / Inspect</span>
+              <span>02 / Direct</span>
               <FileJson size={14} strokeWidth={1.8} />
             </div>
-            <h3>Read the spec.</h3>
-            <p>Scrub the video, open the JSON, or switch to the live SVG render. The motion is not a black box.</p>
+            <h3>The genome writes itself.</h3>
+            <p>
+              A human genome, a score, and a cast. Presentation, hair, face, body and outfit are
+              data. No pixels are generated yet — only anatomy and intent.
+            </p>
             <div className="step-visual" aria-hidden="true">
               <div className="spec-visual step-spec">
-                <span className="spec-label">garden-demo.json</span>
+                <span className="spec-label">human.genome.json</span>
                 <pre>{`{
-  "fps": 60,
-  "duration": 10000,
-  "beats": ["look", "pour", "bloom"]
+  "bodyPlan": "biped",
+  "name": "Marco",
+  "human": "masculine · short · apron",
+  "bones": 16,
+  "beats": ["wave", "stir", "laugh"],
+  "duration": 9600
 }`}</pre>
               </div>
             </div>
@@ -54,21 +66,27 @@ export function HowItWorks() {
 
           <article className="step" data-reveal data-delay="2">
             <div className="step-num">
-              <span>03 / Take it</span>
+              <span>03 / Perform</span>
               <Download size={14} strokeWidth={1.8} />
             </div>
-            <h3>Use the motion.</h3>
-            <p>Download the MP4, copy the spec, or take the live component into your build.</p>
+            <h3>The compiler takes it from there.</h3>
+            <p>
+              Role-tagged bones, breathing, blinks, waves, points, shrugs, dances, bows, and flat
+              world particles. Scrub every frame, share the scene, take the SVG or the JSON.
+            </p>
             <div className="step-visual" aria-hidden="true">
               <div className="files-visual step-files">
                 <span className="file-row">
-                  <Play size={12} strokeWidth={1.8} /> garden.mp4 <span className="file-ext">60fps</span>
+                  <MonitorPlay size={12} strokeWidth={1.8} /> scene.svg{' '}
+                  <span className="file-ext">vector</span>
                 </span>
                 <span className="file-row">
-                  <FileJson size={12} strokeWidth={1.8} /> garden-demo.json <span className="file-ext">spec</span>
+                  <FileJson size={12} strokeWidth={1.8} /> scene.json{' '}
+                  <span className="file-ext">spec</span>
                 </span>
                 <span className="file-row">
-                  <MonitorPlay size={12} strokeWidth={1.8} /> live render <span className="file-ext">svg</span>
+                  <Download size={12} strokeWidth={1.8} /> share link{' '}
+                  <span className="file-ext">url</span>
                 </span>
               </div>
             </div>

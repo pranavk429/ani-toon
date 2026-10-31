@@ -106,6 +106,7 @@ export type StarCatchPlan = {
 
 export type PropPlan =
   | { type: 'kick'; contact: number; enter: number }
+  | { type: 'tennis-shot'; contact: number; enter: number }
   | { type: 'toss'; launch: number; land: number }
   | ({ type: 'hat-catch' } & HatCatchPlan)
   | ({ type: 'star-catch' } & StarCatchPlan);
@@ -160,6 +161,8 @@ const VERBS: readonly Verb[] = [
   'gasp',
   'star-catch',
   'hug',
+  'tennis-shot',
+  'swing',
 ];
 
 const DEFAULT_DUR: Record<Verb, number> = {
@@ -183,11 +186,13 @@ const DEFAULT_DUR: Record<Verb, number> = {
   gasp: 1200,
   'star-catch': 2600,
   hug: 1800,
+  'tennis-shot': 1200,
+  swing: 1200,
 };
 
 /** The time window a beat owns. Beats may not overlap. */
 function span(b: { at: number; verb: Verb; dur: number }): [number, number] {
-  if (b.verb === 'kick') return [b.at - 200, b.at + b.dur];
+  if (b.verb === 'kick' || b.verb === 'tennis-shot' || b.verb === 'swing') return [b.at - 200, b.at + b.dur];
   if (b.verb === 'drop-in') return [b.at, b.at + b.dur + 200];
   if (b.verb === 'hat-catch') return [b.at, b.at + b.dur + 200];
   return [b.at, b.at + b.dur];
@@ -207,7 +212,21 @@ export function validate(raw: unknown): { spec: SceneSpec; warnings: string[] } 
     hairStyle: oneOf(c.hairStyle, ['quiff', 'short', 'bun', 'long', 'bald', 'curly'] as const, 'short'),
     accessory: oneOf(
       c.accessory,
-      ['none', 'chef-hat', 'sun-hat', 'beanie', 'cap', 'glasses', 'headband', 'mustache'] as const,
+      [
+        'none',
+        'chef-hat',
+        'sun-hat',
+        'beanie',
+        'cap',
+        'glasses',
+        'headband',
+        'mustache',
+        'cat-ears',
+        'bear-ears',
+        'bunny-ears',
+        'antenna',
+        'horns',
+      ] as const,
       'none',
     ),
     accessoryColor: hex(c.accessoryColor, '#FFFFFF'),
@@ -215,7 +234,7 @@ export function validate(raw: unknown): { spec: SceneSpec; warnings: string[] } 
     topShade: hex(c.topShade, '#EA2B2B'),
     bottom: hex(c.bottom, '#1453A3'),
     shoe: hex(c.shoe, '#33333B'),
-    pattern: oneOf(c.pattern, ['none', 'stripes', 'badge', 'apron', 'overalls', 'chef'] as const, 'none'),
+    pattern: oneOf(c.pattern, ['none', 'stripes', 'badge', 'apron', 'overalls', 'chef', 'tennis'] as const, 'none'),
   };
 
   const duration = num(r.duration, 5000, 14000, 9600);
@@ -250,14 +269,13 @@ export function validate(raw: unknown): { spec: SceneSpec; warnings: string[] } 
 
   let kind = oneOf(
     prop.kind,
-    ['none', 'ball', 'pancake', 'watering-can', 'gift', 'star', 'jar', 'cup', 'heart'] as const,
+    ['none', 'ball', 'pancake', 'watering-can', 'gift', 'star', 'jar', 'cup', 'heart', 'racket'] as const,
     'none',
   );
   if (beats.some((b) => b.verb === 'star-catch' || b.verb === 'hug') && (kind === 'none' || kind === 'cup')) {
     kind = 'star';
   }
-  if (beats.some((b) => b.verb === 'kick') && kind !== 'ball') {
-    w.push('kick needs a ball; prop set to ball');
+  if ((beats.some((b) => b.verb === 'kick') || beats.some((b) => b.verb === 'tennis-shot' || b.verb === 'swing')) && kind !== 'ball') {
     kind = 'ball';
   }
   if (beats.some((b) => b.verb === 'hat-catch')) {
@@ -1000,6 +1018,127 @@ export function compile(rawSpec: unknown): Compiled {
           [200, 0],
           [dur, 0],
         ]);
+        break;
+      }
+      case 'tennis-shot':
+      case 'swing': {
+        const c = at;
+        props.push({ type: 'tennis-shot', contact: c, enter: c - 1100 });
+        K('lookX', 0, [
+          [c - 1100, 0],
+          [c - 850, 5],
+          [c - 200, 3],
+          [c, 1],
+          [c + 100, 5],
+          [c + 500, 6],
+          [c + 800, 0],
+        ]);
+        K('lookY', 0, [
+          [c - 1100, 0],
+          [c - 600, -1],
+          [c - 150, 2],
+          [c, 1],
+          [c + 120, -2],
+          [c + 450, -3],
+          [c + 800, 0],
+        ]);
+        K('yaw', 0, [
+          [c - 750, 0],
+          [c - 450, 0.46],
+          [c - 80, 0.18],
+          [c, 0],
+          [c + 140, -0.42],
+          [c + 500, -0.28],
+          [c + 800, 0],
+        ]);
+        K('head', 0, [
+          [c - 750, 0],
+          [c - 450, 6],
+          [c, 2],
+          [c + 140, -6],
+          [c + 500, -3],
+          [c + 800, 0],
+        ]);
+        K('lean', 0, [
+          [c - 550, 0],
+          [c - 300, -6],
+          [c - 50, -2],
+          [c, 5],
+          [c + 160, 7],
+          [c + 450, 2],
+          [c + 800, 0],
+        ]);
+        K('shift', 0, [
+          [c - 550, 0],
+          [c - 300, -14],
+          [c - 50, -4],
+          [c, 12],
+          [c + 160, 15],
+          [c + 450, 4],
+          [c + 800, 0],
+        ]);
+        K('sy', 0, [
+          [c - 500, 1],
+          [c - 250, 0.94],
+          [c, 1.05],
+          [c + 160, 1.02],
+          [c + 600, 1],
+        ]);
+        K('aRa', 0, [
+          [c - 750, 12],
+          [c - 450, -26],
+          [c - 120, -10],
+          [c, 36],
+          [c + 90, 76],
+          [c + 220, 96],
+          [c + 550, 84],
+          [c + 850, 12],
+        ]);
+        K('aRe', 0, [
+          [c - 750, 0],
+          [c - 450, 52],
+          [c - 120, 32],
+          [c, 14],
+          [c + 90, 56],
+          [c + 220, 82],
+          [c + 550, 66],
+          [c + 850, 0],
+        ]);
+        K('aLa', 0, [
+          [c - 700, 12],
+          [c - 450, 44],
+          [c - 100, 36],
+          [c, 15],
+          [c + 180, -10],
+          [c + 550, 6],
+          [c + 800, 12],
+        ]);
+        K('aLe', 0, [
+          [c - 700, 0],
+          [c - 450, -16],
+          [c, 20],
+          [c + 180, 42],
+          [c + 550, 12],
+          [c + 800, 0],
+        ]);
+        K('tilt', 0, [
+          [c - 600, 0],
+          [c - 350, -28],
+          [c, 10],
+          [c + 140, 58],
+          [c + 280, 75],
+          [c + 550, 36],
+          [c + 800, 0],
+        ]);
+        K('mouth', 0, [
+          [c - 400, 11],
+          [c - 50, 14],
+          [c, 22],
+          [c + 220, 18],
+          [c + 500, 12],
+          [c + 800, 11],
+        ]);
+        blinkAt.push(c - 700);
         break;
       }
       case 'kick': {
@@ -1978,7 +2117,43 @@ export function propAt(c: Compiled, t: number): PropState {
   }
 
   for (const p of c.props) {
-    if (p.type === 'kick') {
+    if (p.type === 'tennis-shot') {
+      const hand = handScreen(poseAt(c, p.contact), 1);
+      const hitX = hand.x + 102;
+      const hitY = hand.y + 32;
+      const startX = 740;
+      const startY = 440;
+      const arrive = p.contact - 15;
+      if (t >= p.enter && t < p.contact) {
+        const k = Math.min(1, Math.max(0, (t - p.enter) / (arrive - p.enter)));
+        const x = startX + (hitX - startX) * (k * 0.75 + k * k * 0.25);
+        const y = startY + (hitY - startY) * (k * k * 0.75 + k * 0.25);
+        const angleRad = -k * 16;
+        return {
+          x,
+          y,
+          rot: (angleRad * 180) / Math.PI,
+          theta: angleRad,
+          squash: 0,
+          mode: 'air',
+          visible: true,
+        };
+      }
+      if (t >= p.contact && t < p.contact + 950) {
+        const s = (t - p.contact) / 1000;
+        const contactSquash = 1 - seg(t, p.contact, p.contact + 90);
+        const angleRad = -16 + 36 * s;
+        return {
+          x: hitX + 920 * s,
+          y: hitY - 320 * s + 650 * s * s * 0.5,
+          rot: (angleRad * 180) / Math.PI,
+          theta: angleRad,
+          squash: contactSquash * 0.65,
+          mode: 'air',
+          visible: true,
+        };
+      }
+    } else if (p.type === 'kick') {
       const groundY = FEET.y - BALL_R;
       const foot = footScreen(poseAt(c, p.contact), 1);
       const stopX = foot.x + BALL_R * 0.55;

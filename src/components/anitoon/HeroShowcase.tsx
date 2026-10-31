@@ -48,11 +48,11 @@ export function HeroShowcase() {
             <div className="showcase-bar">
               <span className="showcase-brand">
                 <AnitoonMark size={22} />
-                anitoon
+                Anitoon
                 <span>library</span>
               </span>
               <span className="showcase-bar-sep" aria-hidden="true" />
-              <span className="showcase-bar-title">First drop · 3 clips</span>
+              <span className="showcase-bar-title">First drop · 4 clips</span>
               <span className="showcase-fps">
                 <i aria-hidden="true" />
                 60 fps

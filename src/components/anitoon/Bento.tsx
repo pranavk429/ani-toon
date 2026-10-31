@@ -1,28 +1,27 @@
-import { FileJson, MonitorPlay, Play } from 'lucide-react';
-import { CLIPS } from '../../data/clips';
+import { FileJson, Link2, MonitorPlay } from 'lucide-react';
+import { buildMaraScene } from '@/creature/examples';
+import { SceneFrame } from '@/creature/render';
 
 const TICKS = Array.from({ length: 31 }, (_, index) => index);
+const SAMPLE = buildMaraScene();
 
 export function Bento() {
-  const chef = CLIPS[0];
-  const garden = CLIPS[1];
-
   return (
     <section className="bento" id="features" aria-labelledby="bento-title">
       <div className="shell">
         <div className="bento-head" data-reveal>
           <h2 id="bento-title" className="h2">
-            One library for all
+            A whole motion system
             <br />
-            your motion needs.
+            in one sentence.
           </h2>
-          <p>Character, scene and reveal. The first drop, in one place.</p>
+          <p>Not a clip library. A compiler that turns language into performance.</p>
         </div>
 
         <div className="bento-grid">
           <article className="bento-card" data-reveal>
             <h3>60fps</h3>
-            <p>Every frame is rendered, not interpolated from a GIF.</p>
+            <p>Every frame is solved from pose, not sampled from a video or a GIF.</p>
             <div className="bento-visual" aria-hidden="true">
               <div className="fps-visual">
                 <span className="fps-big">
@@ -39,7 +38,7 @@ export function Bento() {
 
           <article className="bento-card" data-reveal data-delay="1">
             <h3>Frame-accurate</h3>
-            <p>Scrub to the frame that matters. Every clip is on one clock.</p>
+            <p>Scrub to any moment. One clock runs the whole performance.</p>
             <div className="bento-visual" aria-hidden="true">
               <div className="frame-visual">
                 <div className="frame-top">
@@ -59,14 +58,15 @@ export function Bento() {
 
           <article className="bento-card" data-reveal data-delay="2">
             <h3>Spec included</h3>
-            <p>The JSON that made the clip is part of the clip.</p>
+            <p>The whole direction is a small JSON object you can read and edit.</p>
             <div className="bento-visual" aria-hidden="true">
               <div className="spec-visual">
-                <span className="spec-label">chef-demo.json</span>
+                <span className="spec-label">scene.spec.json</span>
                 <pre>{`{
-  "fps": 60,
-  "duration": 9600,
-  "beats": ["look", "toss", "hat-catch"]
+  "human": { "presentation": "feminine", "hair": "afro", "top": "coat" },
+  "world": { "preset": "meadow" },
+  "beats": ["wave", "laugh", "point"],
+  "duration": 9600
 }`}</pre>
               </div>
             </div>
@@ -74,11 +74,11 @@ export function Bento() {
 
           <article className="bento-card" data-reveal>
             <h3>Live render</h3>
-            <p>The same spec runs as live SVG. No video required.</p>
+            <p>The same spec draws as SVG in the browser. No video required.</p>
             <div className="bento-visual" aria-hidden="true">
               <div className="live-visual">
-                <div className="phone-mini">
-                  <img src={garden.poster} alt="" width={720} height={720} loading="lazy" />
+                <div className="phone-mini phone-live" style={{ width: 132, height: 132, borderRadius: 22 }}>
+                  <SceneFrame scene={SAMPLE} t={3600} />
                 </div>
                 <span className="live-pill">
                   <i />
@@ -89,30 +89,30 @@ export function Bento() {
           </article>
 
           <article className="bento-card" data-reveal data-delay="1">
-            <h3>1080 × 1080</h3>
-            <p>A square stage for feeds, product pages and app heroes.</p>
+            <h3>720 × 720</h3>
+            <p>A square stage built for feeds, stories and app heroes.</p>
             <div className="bento-visual" aria-hidden="true">
-              <div className="ratio-visual">
-                <span>1080</span>
+              <div className="ratio-visual ratio-vertical">
+                <span>720</span>
                 <i />
-                <span>1080</span>
+                <span>720</span>
               </div>
             </div>
           </article>
 
           <article className="bento-card" data-reveal data-delay="2">
             <h3>Take it out</h3>
-            <p>MP4 for the feed. JSON for the build. Live SVG for the app.</p>
+            <p>SVG for the animation. JSON for the build. A link for the room.</p>
             <div className="bento-visual" aria-hidden="true">
               <div className="files-visual">
                 <span className="file-row">
-                  <Play size={12} strokeWidth={1.8} /> {chef.id}.mp4 <span className="file-ext">60fps</span>
+                  <MonitorPlay size={12} strokeWidth={1.8} /> scene.svg <span className="file-ext">vector</span>
                 </span>
                 <span className="file-row">
-                  <FileJson size={12} strokeWidth={1.8} /> {chef.id}-demo.json <span className="file-ext">spec</span>
+                  <FileJson size={12} strokeWidth={1.8} /> scene.json <span className="file-ext">spec</span>
                 </span>
                 <span className="file-row">
-                  <MonitorPlay size={12} strokeWidth={1.8} /> live render <span className="file-ext">svg</span>
+                  <Link2 size={12} strokeWidth={1.8} /> share link <span className="file-ext">url</span>
                 </span>
               </div>
             </div>

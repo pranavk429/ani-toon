@@ -1,0 +1,58 @@
+{
+  "title": "Maya Championship Tennis Smash",
+  "duration": 9200,
+  "character": {
+    "name": "Maya",
+    "skin": "#F5C3A6",
+    "hair": "#2C1810",
+    "hairStyle": "bun",
+    "accessory": "headband",
+    "accessoryColor": "#FFFFFF",
+    "top": "#FFFFFF",
+    "topShade": "#E2E8F0",
+    "bottom": "#FFFFFF",
+    "shoe": "#FFFFFF",
+    "pattern": "tennis"
+  },
+  "world": {
+    "preset": "sky",
+    "accent": "#10B981"
+  },
+  "prop": {
+    "kind": "ball",
+    "color": "#D4E157"
+  },
+  "beats": [
+    {
+      "at": 400,
+      "verb": "look",
+      "dur": 1100,
+      "target": "right"
+    },
+    {
+      "at": 1800,
+      "verb": "nod",
+      "dur": 800
+    },
+    {
+      "at": 3800,
+      "verb": "tennis-shot",
+      "dur": 1200
+    },
+    {
+      "at": 5200,
+      "verb": "cheer",
+      "dur": 1500
+    },
+    {
+      "at": 6900,
+      "verb": "wink",
+      "dur": 700
+    },
+    {
+      "at": 7800,
+      "verb": "wave",
+      "dur": 1200
+    }
+  ]
+}

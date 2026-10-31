@@ -116,7 +116,7 @@ export function ClipModal() {
         <div className="clip-dialog-head">
           <span className="clip-dialog-brand">
             <AnitoonMark size={22} />
-            anitoon <span>/ clip</span>
+            Anitoon <span>/ clip</span>
           </span>
           <button ref={closeRef} type="button" className="clip-close" onClick={() => setClipId(null)}>
             <X size={16} strokeWidth={1.9} />

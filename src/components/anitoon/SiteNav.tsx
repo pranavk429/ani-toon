@@ -6,10 +6,10 @@ import { ArrowUpRight, Menu, X } from 'lucide-react';
 import { BrandLink } from './Brand';
 
 const LINKS = [
-  { href: '/#library', label: 'Library' },
+  { href: '/creature', label: 'Studio' },
+  { href: '/#briefs', label: 'Starter briefs' },
   { href: '/#how', label: 'How it works' },
   { href: '/#honest', label: 'Under the hood' },
-  { href: '/#voice', label: 'Wispr' },
 ];
 
 export function SiteNav() {
@@ -46,13 +46,13 @@ export function SiteNav() {
         </nav>
 
         <div className="nav-actions">
-          <button type="button" className="nav-ghost" data-clip="chef">
-            Watch a clip
-          </button>
-          <a href="#library" className="btn btn-dark">
-            Browse clips
+          <Link href="/#briefs" className="nav-ghost">
+            Try a brief
+          </Link>
+          <Link href="/creature" className="btn btn-dark">
+            Direct a person
             <ArrowUpRight size={15} strokeWidth={1.9} />
-          </a>
+          </Link>
           <button
             type="button"
             className="nav-burger"
@@ -73,15 +73,10 @@ export function SiteNav() {
             <ArrowUpRight size={17} strokeWidth={1.8} />
           </Link>
         ))}
-        <button
-          type="button"
-          className="btn btn-dark"
-          data-clip="chef"
-          onClick={() => setOpen(false)}
-        >
-          Watch a clip
+        <Link href="/creature" className="btn btn-dark" onClick={() => setOpen(false)}>
+          Direct a person
           <ArrowUpRight size={16} strokeWidth={1.9} />
-        </button>
+        </Link>
       </div>
     </header>
   );

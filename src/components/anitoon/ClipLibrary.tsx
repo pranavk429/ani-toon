@@ -10,9 +10,9 @@ export function ClipLibrary() {
             <h2 id="library-title" className="h2">
               The first drop.
             </h2>
-            <p>Three clips. Three specs. Every frame at 60fps.</p>
+            <p>Four clips. Four specs. Every frame at 60fps.</p>
           </div>
-          <span className="library-count">03 clips / 03 specs</span>
+          <span className="library-count">04 clips / 04 specs</span>
         </div>
 
         <div className="library-grid">
