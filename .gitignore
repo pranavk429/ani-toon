@@ -21,6 +21,12 @@
 # design probe evidence (reference screenshots, extracted system)
 /.designprobe/
 
+# local agent artifacts and temporary static-export staging
+/agent-reports/
+/agent-prompts/
+/qa/
+/.api-routes/
+
 # misc
 .DS_Store
 *.pem

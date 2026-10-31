@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 320" width="360" height="320" role="img" aria-label="Coffee cup">
+  <title>Coffee cup fixture</title>
+  <g id="steam">
+    <path id="steam-1" d="M136 118 C 118 96 154 78 136 54" fill="none" stroke="#B9AFA3" stroke-width="7" stroke-linecap="round"/>
+    <path id="steam-2" d="M180 108 C 162 84 198 66 180 40" fill="none" stroke="#CDC4B9" stroke-width="7" stroke-linecap="round"/>
+    <path id="steam-3" d="M224 118 C 206 96 242 78 224 54" fill="none" stroke="#B9AFA3" stroke-width="7" stroke-linecap="round"/>
+  </g>
+  <ellipse id="saucer" cx="180" cy="266" rx="122" ry="24" fill="#D8D2C8"/>
+  <ellipse id="saucer-inner" cx="180" cy="262" rx="92" ry="16" fill="#EFEAE1"/>
+  <path id="handle" d="M250 172 C 300 166 306 226 252 224" fill="none" stroke="#17151F" stroke-width="14" stroke-linecap="round"/>
+  <path id="cup" d="M96 148 L264 148 L246 246 C 242 260 230 266 216 266 L144 266 C 130 266 118 260 114 246 Z" fill="#F6F1E7" stroke="#17151F" stroke-width="6" stroke-linejoin="round"/>
+  <ellipse id="coffee" cx="180" cy="149" rx="82" ry="12" fill="#6F4428"/>
+  <path id="cup-highlight" d="M124 174 C 122 202 126 226 136 242" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" opacity="0.7"/>
+</svg>

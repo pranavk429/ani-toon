@@ -19,6 +19,8 @@ import {
   type Palette,
   type Presentation,
   type Scene,
+  type SceneObject,
+  type SceneObjectKind,
   type Shoes,
   type SurfaceKind,
   type SurfacePattern,
@@ -52,6 +54,11 @@ const SURFACES = ['fur', 'feathers', 'scales', 'skin', 'metal', 'goo'] as const;
 const PATTERNS = ['none', 'spots', 'stripes', 'plates'] as const;
 const PUPILS = ['round', 'slit', 'star'] as const;
 const MOUTHS = ['smile', 'grin', 'fang', 'beak', 'none'] as const;
+const OBJECT_KINDS = [
+  'ball', 'star', 'plant', 'flower', 'cup', 'gift', 'heart', 'watering-can',
+  'pancake', 'racket', 'sparkle', 'cloud', 'orb', 'flower-pot', 'rocket', 'note',
+] as const;
+
 const ACCESSORIES = [
   'cowboy-hat', 'chef-hat', 'beanie', 'cap', 'glasses', 'scarf', 'saddle', 'reins',
   'leaf-ears', 'tennis-racket', 'none',
@@ -352,6 +359,7 @@ function normaliseHuman(
 function worldFromBrief(brief: string): WorldPreset | undefined {
   const text = brief.toLowerCase();
   if (/\b(kitchen|bakery|cafe|cook|chef)\b/.test(text)) return 'kitchen';
+  if (/\b(football|soccer|striker|goalkeeper|pitch|stadium)\b/.test(text)) return 'meadow';
   if (/\b(tennis|court|racket)\b/.test(text)) return 'court';
   if (/\b(meadow|field|wildflower|picnic|spring)\b/.test(text)) return 'meadow';
   if (/\b(forest|woods|woodland|moss)\b/.test(text)) return 'forest';
@@ -653,6 +661,10 @@ function normaliseActor(raw: unknown, index: number, brief = ''): Genome {
     name,
     species,
     bodyPlan: plan,
+    styleId: str(a.styleId, 'anitoon-storybook-v1'),
+    seed: Math.round(
+      num(a.seed, 0, 2_147_483_647, hashString(`${id}:${name}:${species}`) % 2_147_483_647),
+    ),
     palette,
     proportions: {
       head: num(
@@ -911,6 +923,113 @@ function applyBriefActions(
   return out;
 }
 
+const OBJECT_DEFAULTS: Record<
+  SceneObjectKind,
+  { color: string; x: number; y: number; layer: 'back' | 'front' }
+> = {
+  ball: { color: '#F4F0E6', x: 520, y: 548, layer: 'front' },
+  star: { color: '#FFD45E', x: 520, y: 220, layer: 'front' },
+  plant: { color: '#6FAF6B', x: 150, y: 518, layer: 'back' },
+  flower: { color: '#F28BA8', x: 560, y: 500, layer: 'back' },
+  cup: { color: '#F2B35E', x: 520, y: 470, layer: 'front' },
+  gift: { color: '#E8564E', x: 540, y: 532, layer: 'front' },
+  heart: { color: '#F05A74', x: 520, y: 260, layer: 'front' },
+  'watering-can': { color: '#5BA7C9', x: 560, y: 486, layer: 'front' },
+  pancake: { color: '#E8B45E', x: 360, y: 420, layer: 'front' },
+  racket: { color: '#E8B84B', x: 520, y: 480, layer: 'front' },
+  sparkle: { color: '#FFE38A', x: 500, y: 250, layer: 'front' },
+  cloud: { color: '#FFFFFF', x: 560, y: 170, layer: 'back' },
+  orb: { color: '#8FD8FF', x: 520, y: 300, layer: 'front' },
+  'flower-pot': { color: '#C97B54', x: 540, y: 540, layer: 'back' },
+  rocket: { color: '#E8EEF7', x: 520, y: 300, layer: 'front' },
+  note: { color: '#4B63FF', x: 520, y: 250, layer: 'front' },
+};
+
+const BRIEF_PROPS: Array<{ match: RegExp; kind: SceneObjectKind }> = [
+  { match: /\b(astronaut|space|cosmic|star|meteor|comet)\b/i, kind: 'star' },
+  { match: /\b(football|soccer|tennis|basketball|ball|kick)\b/i, kind: 'ball' },
+  { match: /\b(garden|gardener|plant|bloom|flower|sprout)\b/i, kind: 'plant' },
+  { match: /\b(water|watering|can)\b/i, kind: 'watering-can' },
+  { match: /\b(cup|drink|coffee|tea)\b/i, kind: 'cup' },
+  { match: /\b(gift|present|box)\b/i, kind: 'gift' },
+  { match: /\b(heart|love)\b/i, kind: 'heart' },
+  { match: /\b(pancake|chef|cook)\b/i, kind: 'pancake' },
+  { match: /\b(rocket|launch)\b/i, kind: 'rocket' },
+];
+
+function normaliseObjects(
+  raw: unknown,
+  actors: Actor[],
+  brief: string,
+): SceneObject[] {
+  const list = Array.isArray(raw) ? raw.slice(0, 8) : [];
+  const seen = new Set<string>();
+  const out: SceneObject[] = [];
+
+  for (let index = 0; index < list.length; index++) {
+    const item = (list[index] ?? {}) as Record<string, unknown>;
+    const kind = oneOf(item.kind, OBJECT_KINDS, 'ball') as SceneObjectKind;
+    let id = slug(str(item.id, kind), kind);
+    while (seen.has(id)) id = `${id}-${index}`;
+    seen.add(id);
+    const defaults = OBJECT_DEFAULTS[kind];
+    out.push({
+      id,
+      kind,
+      label: str(item.label).slice(0, 40) || undefined,
+      color: hex(item.color, defaults.color),
+      x: Math.round(num(item.x, 24, 696, defaults.x)),
+      y: Math.round(num(item.y, 24, 696, defaults.y)),
+      scale: num(item.scale, 0.35, 2.2, 1),
+      rotation: num(item.rotation, -180, 180, 0),
+      layer: item.layer === 'back' || item.layer === 'front' ? item.layer : defaults.layer,
+      opacity: num(item.opacity, 0, 1, 1),
+    });
+  }
+
+  if (out.length === 0 && actors.length > 0) {
+    const match = BRIEF_PROPS.find((rule) => rule.match.test(brief));
+    if (match) {
+      const defaults = OBJECT_DEFAULTS[match.kind];
+      out.push({
+        id: match.kind,
+        kind: match.kind,
+        color: defaults.color,
+        x: defaults.x,
+        y: defaults.y,
+        scale: 1,
+        rotation: 0,
+        layer: defaults.layer,
+        opacity: 1,
+      });
+    }
+  }
+
+  return out;
+}
+
+/** Force a scene into studio mode: the procedural score becomes an idle base
+ * layer and the generated MotionPlan owns the performance. */
+export function studioScene(scene: Scene, duration = 8000): Scene {
+  const ms = Math.round(Math.max(2000, Math.min(12000, duration)));
+  return {
+    ...scene,
+    styleId: scene.styleId ?? 'anitoon-storybook-v1',
+    score: {
+      duration: ms,
+      mood: scene.score.mood || 'playful',
+      beats: scene.actors.map((actor) => ({
+        actor: actor.id,
+        verb: actor.genome.bodyPlan === 'quadruped' ? 'walk' : 'idle',
+        at: 0,
+        dur: ms,
+        layer: 'base' as const,
+        intensity: 1,
+      })),
+    },
+  };
+}
+
 export function sceneFromUnknown(raw: unknown, brief = ''): Scene {
   const root = (raw ?? {}) as Record<string, unknown>;
   const source = (root.scene ?? root) as Record<string, unknown>;
@@ -1009,6 +1128,7 @@ export function sceneFromUnknown(raw: unknown, brief = ''): Scene {
   const wantsTennis = /\b(tennis|racket|forehand|backhand|serve|serves)\b/i.test(
     brief,
   );
+  const wantsFootball = /\b(football|soccer|striker|goalkeeper|pitch)\b/i.test(brief);
   if (wantsTennis) {
     const main = actors.find((a) => !a.attach) ?? actors[0];
     if (main && !main.genome.accessories.some((a) => a.kind === 'tennis-racket')) {
@@ -1048,17 +1168,22 @@ export function sceneFromUnknown(raw: unknown, brief = ''): Scene {
   const briefWorld = worldFromBrief(brief);
   const preset: WorldPreset = wantsTennis
     ? 'court'
-    : rawWorld === undefined
-      ? (briefWorld ?? 'studio')
-      : (oneOf(rawWorld, WORLD_PRESETS, briefWorld ?? 'studio') as WorldPreset);
+    : wantsFootball && (rawWorld === undefined || rawWorld === 'court')
+      ? 'meadow'
+      : rawWorld === undefined
+        ? (briefWorld ?? 'studio')
+        : (oneOf(rawWorld, WORLD_PRESETS, briefWorld ?? 'studio') as WorldPreset);
 
+  const objects = normaliseObjects(source.objects ?? source.props, actors, brief);
   const scene: Scene = {
     title: str(source.title, 'Untitled creature').slice(0, 60) || 'Untitled creature',
+    styleId: str(source.styleId, 'anitoon-storybook-v1'),
     world: {
       preset,
       accent: hex((source.world as Record<string, unknown> | undefined)?.accent, actors[0]?.genome.palette.accent ?? '#4B63FF'),
     },
     actors,
+    ...(objects.length > 0 ? { objects } : {}),
     score: {
       duration,
       mood: str((source.score as Record<string, unknown> | undefined)?.mood, 'curious') || 'curious',

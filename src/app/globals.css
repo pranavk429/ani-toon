@@ -70,17 +70,19 @@ a {
   text-decoration: none;
 }
 
-button,
-input,
-textarea,
-select {
-  font: inherit;
-  color: inherit;
-}
+@layer base {
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+    color: inherit;
+  }
 
-button,
-[role="button"] {
-  cursor: pointer;
+  button,
+  [role="button"] {
+    cursor: pointer;
+  }
 }
 
 img,

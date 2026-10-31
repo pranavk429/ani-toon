@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 520" width="400" height="520" role="img" aria-label="Rocket launch">
+  <title>Rocket launch fixture</title>
+  <g id="stars" fill="#FFC53D">
+    <path id="star-1" d="M55 52 l5 12 13 2 -9 9 2 13 -11 -7 -11 7 2 -13 -9 -9 13 -2z"/>
+    <path id="star-2" d="M322 96 l4 9 10 1 -7 7 2 10 -9 -5 -9 5 2 -10 -7 -7 10 -1z"/>
+    <path id="star-3" d="M88 220 l4 9 10 1 -7 7 2 10 -9 -5 -9 5 2 -10 -7 -7 10 -1z"/>
+    <path id="star-4" d="M330 268 l5 12 13 2 -9 9 2 13 -11 -7 -11 7 2 -13 -9 -9 13 -2z"/>
+  </g>
+  <g id="flames">
+    <path id="flame-1" d="M200 382 C 218 404 224 432 200 468 C 176 432 182 404 200 382 Z" fill="#FF5A45"/>
+    <path id="flame-2" d="M168 384 C 182 402 184 426 168 452 C 154 428 156 406 168 384 Z" fill="#FF8A3D"/>
+    <path id="flame-3" d="M232 384 C 246 406 244 428 232 452 C 216 426 218 402 232 384 Z" fill="#FFC53D"/>
+  </g>
+  <g id="rocket">
+    <path id="fin-left" d="M145 292 L108 352 L145 340 Z" fill="#2B4BF2"/>
+    <path id="fin-right" d="M255 292 L292 352 L255 340 Z" fill="#2B4BF2"/>
+    <path id="rocket-body" d="M200 82 C 238 126 258 196 258 288 L258 382 L142 382 L142 288 C 142 196 162 126 200 82 Z" fill="#F6F1E7" stroke="#17151F" stroke-width="6" stroke-linejoin="round"/>
+    <path id="rocket-nose" d="M200 82 C 224 112 238 150 244 190 L156 190 C 162 150 176 112 200 82 Z" fill="#FF5A45"/>
+    <circle id="rocket-window" cx="200" cy="248" r="30" fill="#83C9F4" stroke="#17151F" stroke-width="7"/>
+    <path id="rocket-stripe" d="M142 330 L258 330" stroke="#2B4BF2" stroke-width="14"/>
+  </g>
+</svg>

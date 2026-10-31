@@ -122,8 +122,10 @@ export default function CreaturePage() {
 
   useEffect(() => {
     const w = window as SpeechWindow;
-    setVoiceReady(Boolean(w.SpeechRecognition || w.webkitSpeechRecognition));
-    setReady(true);
+    queueMicrotask(() => {
+      setVoiceReady(Boolean(w.SpeechRecognition || w.webkitSpeechRecognition));
+      setReady(true);
+    });
   }, []);
 
   const copy = useCallback(
@@ -364,40 +366,42 @@ export default function CreaturePage() {
   // ready to direct, not as a blank form. A share link (#s=…) loads the exact
   // scene instead.
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    if (params.get('skeleton') === '1') setShowSkeleton(true);
+    queueMicrotask(() => {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('skeleton') === '1') setShowSkeleton(true);
 
-    const hash = new URLSearchParams(window.location.hash.replace(/^#/, ''));
-    const token = hash.get('s');
-    if (token) {
-      const shared = decodeScene(token);
-      if (shared) {
-        setScene(shared);
-        setPrompt(shared.title);
-        setNotice(null);
-        setTrace([
-          { label: 'scene', detail: `shared link · ${shared.title}` },
-          {
-            label: 'rig',
-            detail: shared.actors
-              .map((a) => `${a.genome.name}:${a.genome.bodyPlan} ${a.skeleton.bones.length} bones`)
-              .join(' · '),
-          },
-          {
-            label: 'score',
-            detail: `${shared.score.beats.length} beats · ${(shared.score.duration / 1000).toFixed(1)}s · ${shared.score.mood}`,
-          },
-        ]);
-        notify('Shared scene loaded from the link.');
-        return;
+      const hash = new URLSearchParams(window.location.hash.replace(/^#/, ''));
+      const token = hash.get('s');
+      if (token) {
+        const shared = decodeScene(token);
+        if (shared) {
+          setScene(shared);
+          setPrompt(shared.title);
+          setNotice(null);
+          setTrace([
+            { label: 'scene', detail: `shared link · ${shared.title}` },
+            {
+              label: 'rig',
+              detail: shared.actors
+                .map((a) => `${a.genome.name}:${a.genome.bodyPlan} ${a.skeleton.bones.length} bones`)
+                .join(' · '),
+            },
+            {
+              label: 'score',
+              detail: `${shared.score.beats.length} beats · ${(shared.score.duration / 1000).toFixed(1)}s · ${shared.score.mood}`,
+            },
+          ]);
+          notify('Shared scene loaded from the link.');
+          return;
+        }
+        notify('That share link is damaged — showing the starter scene.');
       }
-      notify('That share link is damaged — showing the starter scene.');
-    }
 
-    const p = params.get('prompt');
-    if (!p) return;
-    setPrompt(p);
-    void direct(p, true);
+      const p = params.get('prompt');
+      if (!p) return;
+      setPrompt(p);
+      void direct(p, true);
+    });
     // One-shot entry point; do not re-run when the scene changes.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

@@ -73,7 +73,9 @@ const SURPRISES = [
 
 export function BriefLibrary() {
   const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  useEffect(() => {
+    queueMicrotask(() => setMounted(true));
+  }, []);
 
   return (
     <section className="briefs" id="briefs" aria-labelledby="briefs-title">

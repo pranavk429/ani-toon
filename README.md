@@ -74,6 +74,84 @@ The site tells that story once and then gets out of the way. It does **not** req
 
 **Not a SaaS:** no pricing, no login, no MCP server, no fake customers, no invented case studies. Just a small, honest motion library.
 
+---
+
+## ANI Studio
+
+**ANI is an AI-directed, deterministic vector animation studio for generated characters and imported SVGs.**
+
+Natural-language prompts direct procedural character scenes or animate imported vector SVGs. A server-side Director compiles instructions into a declarative **MotionPlan** (**Motion DSL v1**). The browser evaluates this document deterministically at 60fps, providing live interactive playback, timeline inspection, keyframe editing, local project persistence, and multi-format exports.
+
+### What is Implemented
+
+Based on verified contracts and implementation files:
+
+- **Server-Side Director Abstraction** (`src/lib/ai/contracts.ts`): Provider-agnostic API contract (`POST /api/animation/direct`) handling instruction prompts, revisions, validation, and repair passes.
+- **Motion DSL v1** (`src/lib/animation/types.ts`): Declarative, non-executable motion schema specifying targets (`svg`, `character`, `object`), normalized keyframes (`at: 0..1`), and standard easing functions.
+- **Deterministic 60fps Evaluator** (`src/lib/animation/evaluate.ts`, `runtime.ts`): Pure functional evaluation of motion state at timestamp `t` without runtime drift or external scripts.
+- **Character Bones, Face, and Objects Adapter** (`src/creature/motion.ts`, `src/creature/objects.ts`): Multi-track character animations layering atop the procedural idle engine (breathing, blinks, gaits) with rig rotation/scale limits and stage object positioning.
+- **Sanitized SVG Import Boundary** (`src/lib/svg/*`): Allowlist-based XML parsing, DOCTYPE stripping, script blocking, and stable element ID mapping.
+- **Interactive Timeline & Studio UI** (`src/components/ani-studio/*`): Real-time playback transport, track inspector, source tree, Director chat and visual stage.
+- **Local Project Storage** (`src/lib/project-store/*`): Persistent client-side project management backed by browser IndexedDB (with LocalStorage fallback).
+- **Multi-Format Exports** (`src/lib/studio-export/*`, `src/lib/animation/exportSvg.ts`): Lossless native `.ani.json` project downloads, standalone SMIL animated SVGs, raster PNG snapshots, and canvas-recorded WebM video.
+
+### Run Locally
+
+```bash
+pnpm install
+pnpm dev
+```
+
+Open [http://localhost:3000/studio](http://localhost:3000/studio) (or [http://localhost:3000/creature](http://localhost:3000/creature) for the character generator).
+
+#### Environment Variables
+
+Copy the example environment template:
+```bash
+cp .env.example .env.local
+```
+
+For the deployed app, point the Director at an OpenAI-compatible API gateway:
+- `AI_BASE_URL`, `AI_API_KEY`, `AI_MODEL`, `ANIMATION_DIRECTOR_PROVIDER=gateway`.
+
+For local verification without a key, the server can run the installed Gemini 3.8
+Flash CLI:
+- `ANIMATION_DIRECTOR_PROVIDER=agy`, `AGY_BIN`, `AGY_MODEL`, `AGY_TIMEOUT_MS`.
+- The `agy` provider is disabled automatically on Vercel and is not a production dependency.
+
+Direct `EXPLABS_API_KEY` / `GEMINI_API_KEY` providers remain supported.
+See [docs/ENVIRONMENT.md](docs/ENVIRONMENT.md) for full details.
+
+### Honest Status Note
+
+Real hosted AI direction requires an API gateway or provider credentials. On a
+developer machine the local `agy` provider produces real Gemini output without
+embedding a key; it is labelled `provider: "agy"`. When no provider is
+available, or an upstream call fails, ANI operates in a **local deterministic
+fallback mode** and labels the result `source: "fallback"` or `source: "local"`.
+Fallback output must never be described or marketed as AI-generated.
+
+Local verification performed during development: an astronaut character prompt
+and a motion prompt were generated through Gemini 3.8 Flash via `agy`, validated
+by Motion DSL v1, imported into the studio, played back, and exported as project
+JSON and PNG.
+
+### Deployment Notice
+
+- **Vercel** is required for deploying ANI Studio with live server API routes (`/api/animation/direct`, `/api/studio/character`, `/api/direct`).
+- **GitHub Pages** hosts the static Anitoon clip-library deployment (`https://pranavk429.github.io/ani-toon/`) built with `output: "export"`, which cannot execute serverless API routes.
+
+For complete deployment instructions, see [DEPLOYMENT.md](DEPLOYMENT.md).
+
+### Documentation Links
+
+- [Architecture & Contracts Specification](docs/ARCHITECTURE.md)
+- [Environment Variables & Configuration](docs/ENVIRONMENT.md)
+- [Deployment Guide (Vercel & Pages)](DEPLOYMENT.md)
+- [Character Art Style Guide](docs/ART-STYLE.md)
+
+---
+
 ## Design
 
 The visual system is adapted from the measured language of [Mobbin](https://mobbin.com/):
@@ -102,7 +180,7 @@ pnpm lint
 pnpm typecheck
 ```
 
-No environment variables are required.
+No environment variables are required for the static viewer.
 
 ## Verification
 
@@ -133,12 +211,19 @@ designprobe-plugin gate --project . --url http://localhost:3000
 ```text
 src/app/                  Next.js routes, layout, global tokens
 src/components/anitoon/   Landing, library, viewer, footer
+src/components/ani-studio/ ANI Studio UI, stage, transport, timeline and Director chat
 src/data/clips.ts         The three clips and their metadata
+src/creature/             Procedural character engine, bone rigging, and motion adapter
+src/lib/animation/        Motion DSL v1 schema, validation, evaluator, SMIL export
+src/lib/svg/              SVG sanitizer, parser, geometry, and scene graph
+src/lib/project-store/    IndexedDB project persistence
+src/lib/studio-export/    Export pipelines (JSON, SVG, PNG, WebM)
+src/lib/ai/               Director contracts and provider abstraction
 src/toon/                 SVG motion engine + live renderer
 public/videos/            Full 1080p MP4s + 600px 60fps previews
 public/specs/             The source specs for every clip
 public/images/            Posters and hero thumbnails
-docs/                     Screenshots and design notes
+docs/                     Architecture, environment, art style, and design notes
 ```
 
 ## Deploy
@@ -149,15 +234,15 @@ docs/                     Screenshots and design notes
 https://pranavk429.github.io/ani-toon/
 ```
 
-**Vercel / any Next host** — import the repo, run `pnpm build`, and serve. Set `NEXT_PUBLIC_SITE_URL` to the final domain if you want absolute OG metadata.
+**Vercel / any Next host** — see [DEPLOYMENT.md](DEPLOYMENT.md). Import the repo, run `pnpm build`, and serve with API routes enabled.
 
 ## Stack
 
-- Next.js 16 (App Router, static-renderable) + React 19 + TypeScript
+- Next.js 16 (App Router, dynamic API routes & static export support) + React 19 + TypeScript
 - Tailwind CSS v4 with the measured design tokens
 - `next/font/local` for Switzer
-- Hand-built SVG motion engine; no animation library at runtime
-- Real 60fps MP4s, real JSON specs, no database or server
+- Hand-built SVG motion engine & Motion DSL v1; deterministic runtime
+- Real 60fps MP4s, real JSON specs, IndexedDB client project storage
 
 ## Credits
 

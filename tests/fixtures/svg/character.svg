@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 480" width="360" height="480" role="img" aria-label="Cartoon fox character">
+  <title>Cartoon character fixture</title>
+  <g id="character">
+    <path id="tail" d="M268 330 C 320 312 338 268 314 232 C 300 212 280 214 272 228 C 292 246 292 286 252 306 Z" fill="#E0783C" stroke="#17151F" stroke-width="5" stroke-linejoin="round"/>
+    <g id="leg-left">
+      <path id="leg-left-thigh" d="M148 348 L146 414 L176 414 L174 348 Z" fill="#E0783C"/>
+      <ellipse id="foot-left" cx="160" cy="424" rx="26" ry="12" fill="#17151F"/>
+    </g>
+    <g id="leg-right">
+      <path id="leg-right-thigh" d="M194 348 L196 414 L226 414 L224 348 Z" fill="#E0783C"/>
+      <ellipse id="foot-right" cx="210" cy="424" rx="26" ry="12" fill="#17151F"/>
+    </g>
+    <path id="body" d="M142 252 C 120 286 118 336 130 366 C 154 380 206 380 230 366 C 242 336 240 286 218 252 Z" fill="#F08A4B" stroke="#17151F" stroke-width="6" stroke-linejoin="round"/>
+    <ellipse id="belly" cx="180" cy="322" rx="42" ry="34" fill="#FFE3C2"/>
+    <g id="arm-left">
+      <path id="arm-left-upper" d="M136 268 C 108 286 96 314 102 338" fill="none" stroke="#E0783C" stroke-width="24" stroke-linecap="round"/>
+      <circle id="hand-left" cx="102" cy="342" r="15" fill="#F08A4B" stroke="#17151F" stroke-width="4"/>
+    </g>
+    <g id="arm-right">
+      <path id="arm-right-upper" d="M224 268 C 252 286 264 314 258 338" fill="none" stroke="#E0783C" stroke-width="24" stroke-linecap="round"/>
+      <circle id="hand-right" cx="258" cy="342" r="15" fill="#F08A4B" stroke="#17151F" stroke-width="4"/>
+    </g>
+    <g id="head">
+      <path id="ear-left" d="M124 128 L104 54 L168 94 Z" fill="#E0783C" stroke="#17151F" stroke-width="5" stroke-linejoin="round"/>
+      <path id="ear-left-inner" d="M128 118 L118 76 L154 98 Z" fill="#FFD6C2"/>
+      <path id="ear-right" d="M236 128 L256 54 L192 94 Z" fill="#E0783C" stroke="#17151F" stroke-width="5" stroke-linejoin="round"/>
+      <path id="ear-right-inner" d="M232 118 L242 76 L206 98 Z" fill="#FFD6C2"/>
+      <path id="head-shape" d="M180 82 C 244 82 270 128 262 178 C 254 226 220 246 180 246 C 140 246 106 226 98 178 C 90 128 116 82 180 82 Z" fill="#F08A4B" stroke="#17151F" stroke-width="6"/>
+      <path id="muzzle" d="M138 178 C 138 152 222 152 222 178 C 222 214 198 230 180 230 C 162 230 138 214 138 178 Z" fill="#FFE3C2"/>
+      <g id="eyes">
+        <ellipse id="eye-left" cx="148" cy="164" rx="16" ry="19" fill="#FFFFFF"/>
+        <ellipse id="eye-right" cx="212" cy="164" rx="16" ry="19" fill="#FFFFFF"/>
+        <circle id="pupil-left" cx="152" cy="168" r="8" fill="#17151F"/>
+        <circle id="pupil-right" cx="208" cy="168" r="8" fill="#17151F"/>
+      </g>
+      <path id="mouth" d="M162 204 C 170 214 190 214 198 204" fill="none" stroke="#17151F" stroke-width="5" stroke-linecap="round"/>
+      <path id="nose" d="M180 186 L192 198 L180 204 L168 198 Z" fill="#17151F"/>
+    </g>
+  </g>
+</svg>

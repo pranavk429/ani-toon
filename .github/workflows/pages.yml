@@ -27,7 +27,11 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm build
+      - run: |
+          set -euo pipefail
+          mv src/app/api .api-routes
+          trap 'mv .api-routes src/app/api' EXIT
+          GITHUB_PAGES=true pnpm build
         env:
           GITHUB_PAGES: 'true'
       - run: touch out/.nojekyll

@@ -5,6 +5,9 @@ import { useId, useMemo } from 'react';
 import { apply, faceMatrix, toSvg } from './math';
 import { mix } from '../toon/shapes';
 import { scenePoseAt, type ActorPose } from './pose';
+import { applyMotionToScene } from './motion';
+import { ObjectLayer } from './objectLayer';
+import type { MotionDocument } from '@/lib/animation/types';
 import {
   ART,
   clothOf,
@@ -44,12 +47,16 @@ export function SceneFrame({
   scene,
   t,
   showSkeleton = false,
+  motion = null,
 }: {
   scene: Scene;
   t: number;
   showSkeleton?: boolean;
+  motion?: MotionDocument | null;
 }) {
-  const pose = scenePoseAt(scene, t);
+  const basePose = scenePoseAt(scene, t);
+  const frame = applyMotionToScene(scene, basePose, motion, t);
+  const pose = frame.pose;
   const transforms = sceneTransforms(scene, pose);
   const fit = useMemo(() => fitScene(scene, 720, 720), [scene]);
   const actors = useMemo(
@@ -67,6 +74,7 @@ export function SceneFrame({
       aria-label={scene.title}
     >
       <SceneBackdrop world={scene.world} t={t} />
+      <ObjectLayer frames={frame.backObjects} />
       {actors.map((actor) => {
         const tr = transforms.get(actor.id);
         if (!tr) return null;
@@ -82,6 +90,7 @@ export function SceneFrame({
           />
         );
       })}
+      <ObjectLayer frames={frame.frontObjects} />
       {showSkeleton && <SkeletonOverlay scene={scene} transforms={transforms} fit={fit} />}
     </svg>
   );

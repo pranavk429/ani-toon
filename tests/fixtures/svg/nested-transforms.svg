@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" width="300" height="300" role="img" aria-label="Nested transforms">
+  <title>Nested transform fixture</title>
+  <g id="outer" transform="translate(40 30)">
+    <rect id="outer-panel" x="0" y="0" width="200" height="200" rx="16" fill="#EFEAE1" stroke="#17151F" stroke-width="4"/>
+    <g id="middle" transform="rotate(12 100 100)">
+      <circle id="middle-orbit" cx="100" cy="100" r="62" fill="none" stroke="#2B4BF2" stroke-width="8"/>
+      <g id="inner" transform="scale(1.2)">
+        <rect id="nested-box" x="55" y="55" width="70" height="70" rx="10" fill="#FFC53D" stroke="#17151F" stroke-width="4"/>
+        <path d="M70 100 L90 70 L110 100 Z" fill="#FF5A45"/>
+      </g>
+    </g>
+  </g>
+  <path d="M20 270 C 80 240 220 300 280 260" fill="none" stroke="#3F7D4E" stroke-width="6" stroke-linecap="round"/>
+</svg>

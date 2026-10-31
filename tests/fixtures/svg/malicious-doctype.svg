@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg [
+  <!ENTITY xxe SYSTEM "file:///etc/passwd">
+  <!ENTITY harmless "expanded entity">
+]>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <text id="entity-text" x="10" y="30">&xxe;</text>
+  <text id="entity-text-2" x="10" y="60">&harmless;</text>
+  <rect id="doctype-rect" x="10" y="80" width="60" height="30" fill="#2B4BF2"/>
+</svg>

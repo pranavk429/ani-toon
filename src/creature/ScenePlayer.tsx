@@ -17,18 +17,18 @@ export function ScenePlayer({
   const raf = useRef(0);
 
   useEffect(() => {
-    setMounted(true);
+    queueMicrotask(() => setMounted(true));
   }, []);
 
   useEffect(() => {
     if (!mounted) return;
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reduced) {
-      setT(scene.score.duration * 0.42);
+      queueMicrotask(() => setT(scene.score.duration * 0.42));
       return;
     }
 
-    setT(0);
+    queueMicrotask(() => setT(0));
     const start = performance.now();
     const tick = (now: number) => {
       setT((now - start) % scene.score.duration);

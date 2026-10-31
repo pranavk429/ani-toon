@@ -6,7 +6,8 @@ import { ArrowUpRight, Menu, X } from 'lucide-react';
 import { BrandLink } from './Brand';
 
 const LINKS = [
-  { href: '/creature', label: 'Studio' },
+  { href: '/studio', label: 'ANI Studio' },
+  { href: '/creature', label: 'Character lab' },
   { href: '/#briefs', label: 'Starter briefs' },
   { href: '/#how', label: 'How it works' },
   { href: '/#honest', label: 'Under the hood' },
